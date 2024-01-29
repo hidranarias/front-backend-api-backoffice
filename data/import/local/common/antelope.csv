@@ -1,0 +1,6 @@
+name,color,type_id,location_id,age,weight,gender
+Impala,Brown,1,1,5,50.0,male
+Springbok,Tan,2,2,3,40.5,female
+Gazelle,Light Brown,2,2,4,35.2,male
+Oryx,Gray,2,2,7,70.3,female
+Kudu,Dark Brown,2,2,6,95.4,male

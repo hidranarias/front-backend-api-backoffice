@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="zed"
+          xsi:noNamespaceSchemaLocation="http://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\AntelopeType\Persistence" package="src.Orm.Zed.AntelopeType.Persistence">
+
+    <table name="pyz_antelope_type" allowPkInsert="true" idMethod="native">
+        <column name="id" type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="type_name" type="VARCHAR" required="true"/>
+        <column name="description" type="LONGVARCHAR"/>
+
+        <behavior name="event"/>
+    </table>
+</database>

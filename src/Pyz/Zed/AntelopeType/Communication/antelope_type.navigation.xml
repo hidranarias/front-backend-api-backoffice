@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <antelope-type>
+        <label>AntelopeType</label>
+        <title>AntelopeType</title>
+        <pages>
+        </pages>
+    </antelope-type>
+</config>

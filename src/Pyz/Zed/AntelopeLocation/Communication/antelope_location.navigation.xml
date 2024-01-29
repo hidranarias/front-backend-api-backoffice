@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <antelope-location>
+        <label>AntelopeLocation</label>
+        <title>AntelopeLocation</title>
+        <pages>
+        </pages>
+    </antelope-location>
+</config>

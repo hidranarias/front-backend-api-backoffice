@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="zed"
+          xsi:noNamespaceSchemaLocation="http://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\Antelope\Persistence" package="src.Orm.Zed.Antelope.Persistence">
+
+    <table name="pyz_antelope" allowPkInsert="true" idMethod="native" phpName="PyzAntelope">
+        <column name="idAntelope" type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="name" type="VARCHAR" required="true"/>
+        <column name="color" type="VARCHAR" required="true"/>
+
+        <column name="type_id" type="INTEGER" required="true"/>
+        <column name="location_id" type="INTEGER" required="true"/>
+        <column name="age" type="INTEGER" required="true"/>
+        <column name="weight" type="FLOAT" required="true"/>
+        <column name="gender" type="ENUM" valueSet="male, female" required="true"/>
+        <column name="created_at" type="TIMESTAMP" required="true"/>
+        <column name="updated_at" type="TIMESTAMP"/>
+
+
+        <foreign-key name="pyz_antelope-fk_antelope_type" foreignTable="pyz_antelope_type" onDelete="CASCADE">
+            <reference local="type_id" foreign="id"/>
+        </foreign-key>
+
+        <foreign-key foreignTable="pyz_antelope_location">
+            <reference local="location_id" foreign="id"/>
+        </foreign-key>
+
+        <behavior name="event"/>
+    </table>
+
+</database>
