@@ -1,7 +1,18 @@
 {% extends '@Gui/Layout/layout.twig' %}
 
 {% block content %}
+    <table>
+        <tr>
+            <th>id</th>
+            <th>Name</th>
 
-    Hello type!
+        </tr>
+    </table>
+    {% for antelope in antelopes %}
+        <tr>
+            <td>{{ antelope.idAntelope }}</td>
+            <td>{{ antelope.name }}</td>
+        </tr>
+    {% endfor %}
 
 {% endblock %}

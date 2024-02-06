@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a8bce07f7032442fb447df3df2bfd3fb",
+    "content-hash": "9831fbf326f1c87fd6822d794ccdb72e",
     "packages": [
         {
             "name": "async-aws/core",
@@ -43118,6 +43118,119 @@
                 "source": "https://github.com/spryker/sequence-number/tree/3.1.1"
             },
             "time": "2022-07-19T15:32:39+00:00"
+        },
+        {
+            "name": "spryker/service-point",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spryker/service-point.git",
+                "reference": "a9e8d9c3ea9ec07b5159362690fdac1b56e30745"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spryker/service-point/zipball/a9e8d9c3ea9ec07b5159362690fdac1b56e30745",
+                "reference": "a9e8d9c3ea9ec07b5159362690fdac1b56e30745",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0",
+                "spryker/acl-merchant-portal-extension": "^1.0.0",
+                "spryker/country": "^4.1.0",
+                "spryker/kernel": "^3.30.0",
+                "spryker/propel-orm": "^1.0.0",
+                "spryker/store": "^1.12.0",
+                "spryker/transfer": "^3.27.0",
+                "spryker/uuid-behavior": "^1.0.0"
+            },
+            "require-dev": {
+                "spryker/code-sniffer": "*",
+                "spryker/propel": "*",
+                "spryker/testify": "*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spryker\\": "src/Spryker/",
+                    "SprykerTest\\Shared\\ServicePoint\\Helper\\": "tests/SprykerTest/Shared/ServicePoint/Helper/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "description": "ServicePoint module",
+            "support": {
+                "source": "https://github.com/spryker/service-point/tree/1.0.0"
+            },
+            "time": "2023-10-27T14:50:55+00:00"
+        },
+        {
+            "name": "spryker/service-points-backend-api",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spryker/service-points-backend-api.git",
+                "reference": "7f21ae3478127245479fde372f3d6a18497e1ee4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spryker/service-points-backend-api/zipball/7f21ae3478127245479fde372f3d6a18497e1ee4",
+                "reference": "7f21ae3478127245479fde372f3d6a18497e1ee4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1",
+                "spryker/glossary-storage": "^1.5.0",
+                "spryker/glue-application-extension": "^1.0.0",
+                "spryker/glue-json-api-convention-extension": "^1.0.0",
+                "spryker/kernel": "^3.66.0",
+                "spryker/service-point": "^1.0.0",
+                "spryker/symfony": "^3.0.0",
+                "spryker/transfer": "^3.31.0",
+                "spryker/uuid-behavior": "^1.0.0"
+            },
+            "require-dev": {
+                "spryker/code-sniffer": "*",
+                "spryker/config": "*",
+                "spryker/container": "*",
+                "spryker/country": "*",
+                "spryker/glue-application": "*",
+                "spryker/glue-backend-api-application": "*",
+                "spryker/propel": "*",
+                "spryker/storage": "*",
+                "spryker/store": "*",
+                "spryker/testify": "*",
+                "spryker/zed-request": "*"
+            },
+            "suggest": {
+                "spryker/glue-application": "If you want to use glue application plugin"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spryker\\": "src/Spryker/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "description": "ServicePointsBackendApi module",
+            "support": {
+                "source": "https://github.com/spryker/service-points-backend-api/tree/1.1.0"
+            },
+            "time": "2023-11-10T09:10:30+00:00"
         },
         {
             "name": "spryker/session",

@@ -202,6 +202,7 @@
         "spryker/secrets-manager": "^1.0.0",
         "spryker/secrets-manager-aws": "^1.0.2",
         "spryker/security-blocker-rest-api": "^1.0.0",
+        "spryker/service-points-backend-api": "^1.1",
         "spryker/shipment-cart-connector": "^2.1.3",
         "spryker/shipment-checkout-connector": "^2.0.5",
         "spryker/shipment-discount-connector": "^4.0.5",

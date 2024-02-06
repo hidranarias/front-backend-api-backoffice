@@ -9,8 +9,10 @@ declare(strict_types=1);
 
 namespace Pyz\Zed\Antelope\Communication\Controller;
 
+use ArrayObject;
+use Generated\Shared\Transfer\AntelopeCriteriaTransfer;
+use Generated\Shared\Transfer\SortTransfer;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
-use stdClass;
 
 /**
  * @method \Pyz\Zed\Antelope\Communication\AntelopeCommunicationFactory getFactory()
@@ -19,13 +21,16 @@ use stdClass;
  */
 class IndexController extends AbstractController
 {
-    public function indexAction()
+    public function indexAction(): array
     {
-        $antelope = new stdClass();
-        $antelope->name = 'Hidran';
-
+        $antelopeCriteriaTransfer = new AntelopeCriteriaTransfer();
+        $sortTransfer = new SortTransfer();
+        $sortTransfer->setField('name');
+        $sortTransfer->setIsAscending(true);
+        $antelopeCriteriaTransfer->setSortCollection(new ArrayObject($sortTransfer));
+        $antelopes = $this->getFacade()->getAntelopeCollection($antelopeCriteriaTransfer)->getAntelopes();
         return $this->viewResponse([
-            'antelope' => $antelope,
+            'antelopes' => $antelopes,
         ]);
     }
 }
