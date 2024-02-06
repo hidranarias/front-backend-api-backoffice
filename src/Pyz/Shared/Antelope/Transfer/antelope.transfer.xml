@@ -1,11 +1,10 @@
 <?xml version="1.0"?>
-<transfers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns="spryker:transfer-01"
-           xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+<transfers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="spryker:transfer-01" xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
     <transfer name="Sort">
         <property name="field" type="string"/>
         <property name="isAscending" type="bool"/>
     </transfer>
+
     <transfer name="Pagination">
         <property name="limit" type="int"/>
         <property name="offset" type="int"/>
@@ -19,22 +18,23 @@
         <property name="nextPage" type="int"/>
         <property name="previousPage" type="int"/>
     </transfer>
+
     <transfer name="Antelope">
         <property name="idAntelope" type="int"/>
         <property name="name" type="string"/>
         <property name="color" type="string"/>
-
         <property name="typeId" type="int"/>
         <property name="locationId" type="int"/>
         <property name="age" type="int"/>
         <property name="weight" type="float"/>
         <property name="gender" type="string"/>
     </transfer>
+
     <transfer name="AntelopeCollection">
         <property name="antelopes" type="Antelope[]" singular="antelope"/>
         <property name="pagination" type="Pagination"/>
-
     </transfer>
+
     <transfer name="AntelopeConditions">
         <property name="antelopeIds" singular="idAntelope" type="array"/>
         <property name="name" type="string"/>
@@ -42,25 +42,31 @@
         <property name="idLocation" type="int"/>
         <property name="idType" type="int"/>
     </transfer>
+
     <transfer name="AntelopeCriteria">
         <property name="antelopeConditions" type="AntelopeConditions"/>
         <property name="sortCollection" singular="sort" type="Sort[]"/>
         <property name="pagination" type="Pagination"/>
     </transfer>
+
     <transfer name="AntelopeCollectionResponse">
         <property name="errors" type="Error[]" singular="error"/>
         <property name="Antelopes" type="Antelope[]" singular="Antelope"/>
     </transfer>
+
     <transfer name="AntelopeCollectionDeleteCriteria">
         <property name="isTransactional" type="bool"/>
         <property name="AntelopeIds" type="int[]" singular="idAntelope"/>
         <property name="uuids" type="string[]" singular="uuid"/>
     </transfer>
+
     <transfer name="Error">
         <property name="message" type="string"/>
         <property name="entityIdentifier" type="string"/>
     </transfer>
+
     <transfer name="AntelopeSearchCriteria">
         <property name="fksAntelope" singular="fkAntelope" type="array"/>
     </transfer>
+
 </transfers>

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Pyz\Zed\Antelope\Communication;
 
+use Pyz\Zed\AntelopeGui\Communication\Table\AntelopeTable;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 
 /**
@@ -19,4 +20,7 @@ use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
  */
 class AntelopeCommunicationFactory extends AbstractCommunicationFactory
 {
+    public function createAntelopeTable(): AntelopeTable
+    {
+    }
 }
