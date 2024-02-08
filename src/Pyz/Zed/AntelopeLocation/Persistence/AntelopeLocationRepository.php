@@ -18,14 +18,22 @@ use Spryker\Zed\Kernel\Persistence\AbstractRepository;
  */
 class AntelopeLocationRepository extends AbstractRepository implements AntelopeLocationRepositoryInterface
 {
-    public function findAntelopeLocation(AntelopeLocationCriteriaTransfer $antelopeLocationCriteriaTransfer): ?AntelopeLocationTransfer
-    {
+    public function findAntelopeLocation(AntelopeLocationCriteriaTransfer $antelopeLocationCriteriaTransfer
+    ): ?AntelopeLocationTransfer {
         $antelopeLocationQuery = $this->getFactory()->createAntelopeLocationQuery();
         $locationName = $antelopeLocationCriteriaTransfer->getLocationName();
         $antelopeLocationEntity = $antelopeLocationQuery->filterByLocationName($locationName)->findOne();
         if (!$antelopeLocationEntity) {
             return null;
         }
+
+        return (new AntelopeLocationTransfer())->fromArray($antelopeLocationEntity->toArray());
+    }
+
+    public function getAntelopeLocationCollection(AntelopeLocationCriteriaTransfer $antelopeLocationCriteriaTransfer
+    ): ?AntelopeLocationTransfer {
+        $antelopeLocationQuery = $this->getFactory()->createAntelopeLocationQuery();
+
 
         return (new AntelopeLocationTransfer())->fromArray($antelopeLocationEntity->toArray());
     }

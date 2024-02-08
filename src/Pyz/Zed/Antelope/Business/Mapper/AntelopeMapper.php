@@ -11,4 +11,7 @@ namespace Pyz\Zed\Antelope\Business\Mapper;
 
 class AntelopeMapper implements AntelopeMapperInterface
 {
+    public function mapAntelopeTransferToEntity()
+    {
+    }
 }

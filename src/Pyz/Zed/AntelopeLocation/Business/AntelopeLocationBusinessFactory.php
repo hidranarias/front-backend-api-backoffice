@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace Pyz\Zed\AntelopeLocation\Business;
 
+use Pyz\Zed\AntelopeLocation\Business\Reader\AntelopeLocationReader;
+use Pyz\Zed\AntelopeLocation\Business\Reader\AntelopeLocationReaderInterface;
+use Pyz\Zed\AntelopeLocation\Business\Writer\AntelopeLocationWriter;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
 /**
@@ -18,4 +21,13 @@ use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
  */
 class AntelopeLocationBusinessFactory extends AbstractBusinessFactory
 {
+    public function createAntelopeLocationReader(): AntelopeLocationReaderInterface
+    {
+        return new AntelopeLocationReader($this->getRepository());
+    }
+
+    public function createAntelopeLocationWriter(): AntelopeLocationWriterInterface
+    {
+        return new AntelopeLocationWriter($this->getEntityManager());
+    }
 }

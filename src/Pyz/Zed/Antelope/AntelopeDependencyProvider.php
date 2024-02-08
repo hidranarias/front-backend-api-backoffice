@@ -17,6 +17,9 @@ use Spryker\Zed\Kernel\Container;
  */
 class AntelopeDependencyProvider extends AbstractBundleDependencyProvider
 {
+    public const FACADE_ANTELOPE_LOCATION = 'FACADE_ANTELOPE_LOCATION';
+    public const FACADE_ANTELOPE_TYPE = 'FACADE_ANTELOPE_TYPE';
+
     /**
      * @param \Spryker\Zed\Kernel\Container $container
      *
@@ -37,7 +40,26 @@ class AntelopeDependencyProvider extends AbstractBundleDependencyProvider
     public function provideBusinessLayerDependencies(Container $container): Container
     {
         $container = parent::provideBusinessLayerDependencies($container);
+        $container = $this->addAntelopeLocationFacade($container);
+        $container = $this->addAntelopeTypeFacade($container);
+        return $container;
+    }
 
+    private function addAntelopeLocationFacade(Container $container)
+    {
+        $container->set(
+            static::FACADE_ANTELOPE_LOCATION,
+            fn() => $container->getLocator()->antelopeLocation()->facade()
+        );
+        return $container;
+    }
+
+    private function addAntelopeTypeFacade($container)
+    {
+        $container->set(
+            static::FACADE_ANTELOPE_TYPE,
+            fn() => $container->getLocator()->antelopeType()->facade()
+        );
         return $container;
     }
 

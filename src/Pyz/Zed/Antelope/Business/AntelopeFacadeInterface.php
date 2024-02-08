@@ -19,4 +19,6 @@ interface AntelopeFacadeInterface
         AntelopeCriteriaTransfer $antelopeCriteriaTransfer
     ): AntelopeCollectionTransfer;
 
+    public function createAntelope($antelopeTransfer);
+
 }

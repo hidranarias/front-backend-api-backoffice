@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Pyz\Zed\AntelopeLocation\Business;
 
+use Generated\Shared\Transfer\AntelopeLocationTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -18,13 +19,9 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
  */
 class AntelopeLocationFacade extends AbstractFacade implements AntelopeLocationFacadeInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\QueueReceiveMessageTransfer[] $queueMessageTransfers
-     *
-     * @return \Generated\Shared\Transfer\QueueReceiveMessageTransfer[]
-     */
-    public function processMessages(array $queueMessageTransfers): array
+
+    public function getAntelopeLocations(): AntelopeLocationTransfer
     {
-        // return $this->getFactory()->createExampleQueueMessageProcessor()->processMessages($queueMessageTransfers);
+        $this->getFactory()->createAntelopeLocationWriter();
     }
 }

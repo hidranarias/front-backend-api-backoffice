@@ -28,6 +28,8 @@ class AntelopeRepository extends AbstractRepository implements AntelopeRepositor
     ): AntelopeCollectionTransfer {
         $antelopeCollectionTransfer = new AntelopeCollectionTransfer();
         $antelopeEntities = $this->getFactory()->createAntelopeQuery();
+        $columnArray = ['name', 'type', 'idAntelope', 'color'];
+        $antelopeEntities->withPyzAntelopeLocationQuery()->withPyzAntelopeTypeQuery()->select($columnArray);
         $this->applyAntelopeSearch($antelopeEntities, $antelopeCriteriaTransfer);
         $this->applyAntelopeSorting($antelopeEntities, $antelopeCriteriaTransfer);
         $paginationTransfer = $antelopeCriteriaTransfer->getPagination();
@@ -36,6 +38,7 @@ class AntelopeRepository extends AbstractRepository implements AntelopeRepositor
             $antelopeCollectionTransfer->setPagination($paginationTransfer);
         }
         $objectCollection = $antelopeEntities->find();
+        dd($objectCollection);
         return $this->getFactory()->createAntelopeMapper()->mapAntelopeEntityToAntelopeCollectionTransfer(
             $objectCollection,
             $antelopeCollectionTransfer

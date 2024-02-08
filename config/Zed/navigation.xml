@@ -93,6 +93,21 @@
             </customer-access>
         </pages>
     </customer>
+    <antelopes>
+        <label>Antelopes</label>
+        <title>Antelopes</title>
+        <icon>fa-book</icon>
+        <uri>#</uri>
+        <pages>
+            <antelopes>
+                <label>Antelopes</label>
+                <title>Antelopes</title>
+                <bundle>antelope-gui</bundle>
+                <controller>index</controller>
+                <action>index</action>
+            </antelopes>
+        </pages>
+    </antelopes>
     <catalog>
         <label>Catalog</label>
         <title>Catalog</title>

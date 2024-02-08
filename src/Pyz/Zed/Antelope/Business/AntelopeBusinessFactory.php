@@ -9,12 +9,14 @@ declare(strict_types=1);
 
 namespace Pyz\Zed\Antelope\Business;
 
+use Pyz\Zed\Antelope\AntelopeDependencyProvider;
 use Pyz\Zed\Antelope\Business\Deleter\AntelopeDeleter;
 use Pyz\Zed\Antelope\Business\Deleter\AntelopeDeleterInterface;
 use Pyz\Zed\Antelope\Business\Reader\AntelopeReader;
 use Pyz\Zed\Antelope\Business\Reader\AntelopeReaderInterface;
 use Pyz\Zed\Antelope\Business\Writer\AntelopeWriter;
 use Pyz\Zed\Antelope\Business\Writer\AntelopeWriterInterface;
+use Pyz\Zed\AntelopeLocation\Business\AntelopeLocationFacadeInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
 /**
@@ -39,5 +41,15 @@ class AntelopeBusinessFactory extends AbstractBusinessFactory
     public function createAntelopeDeleter(): AntelopeDeleterInterface
     {
         return new AntelopeDeleter($this->getEntityManager());
+    }
+
+    public function getAntelopeLocationFacade(): AntelopeLocationFacadeInterface
+    {
+        return $this->getProvidedDependency(AntelopeDependencyProvider::FACADE_ANTELOPE_LOCATION);
+    }
+
+    public function getAntelopeTypeFacade(): AntelopeTypeFacadeInterface
+    {
+        return $this->getProvidedDependency(AntelopeDependencyProvider::FACADE_ANTELOPE_TYPE);
     }
 }
