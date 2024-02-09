@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Pyz\Zed\AntelopeLocation\Business\Reader;
 
 use Generated\Shared\Transfer\AntelopeCriteriaTransfer;
+use Generated\Shared\Transfer\AntelopeLocationCollectionTransfer;
 use Generated\Shared\Transfer\AntelopeLocationCriteriaTransfer;
 use Generated\Shared\Transfer\AntelopeLocationTransfer;
 use Pyz\Zed\AntelopeLocation\Persistence\AntelopeLocationRepositoryInterface;
@@ -34,7 +35,7 @@ class AntelopeLocationReader implements AntelopeLocationReaderInterface
         $this->antelopeLocationRepository->findAntelopeLocation($antelopeLocationCriteriaTransfer);
     }
 
-    public function getAntelopeLocationCollection(AntelopeCriteriaTransfer $antelopeCriteriaTransfer
+    public function getAntelopeLocationCollection(?AntelopeCriteriaTransfer $antelopeCriteriaTransfer
     ): AntelopeLocationCollectionTransfer {
         return $this->antelopeLocationRepository->getAntelopeLocationCollection($antelopeCriteriaTransfer);
     }

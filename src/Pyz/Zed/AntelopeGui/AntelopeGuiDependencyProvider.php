@@ -17,12 +17,17 @@ use Spryker\Zed\Kernel\Container;
 class AntelopeGuiDependencyProvider extends AbstractBundleDependencyProvider
 {
     public const  FACADE_ANTELOPE = 'FACADE_ANTELOPE';
-    const PROPEL_QUERY_ANTELOPE = 'PROPEL_QUERY_ANTELOPE';
+    public const  FACADE_ANTELOPE_LOCATION = 'FACADE_ANTELOPE_LOCATION';
+    public const  FACADE_ANTELOPE_TYPE = 'FACADE_ANTELOPE_TYPE';
+
+    public const PROPEL_QUERY_ANTELOPE = 'PROPEL_QUERY_ANTELOPE';
 
     public function provideCommunicationLayerDependencies(Container $container): Container
     {
         $container = $this->addAntelopeQuery($container);
         $container = $this->addAntelopeFacade($container);
+        $container = $this->addAntelopeTypeFacade($container);
+        $container = $this->addAntelopeLocationFacade($container);
         return $container;
     }
 
@@ -36,6 +41,24 @@ class AntelopeGuiDependencyProvider extends AbstractBundleDependencyProvider
     protected function addAntelopeFacade(Container $container): Container
     {
         $container->set(static::FACADE_ANTELOPE, fn() => $container->getLocator()->antelope()->facade());
+        return $container;
+    }
+
+    protected function addAntelopeTypeFacade(Container $container): Container
+    {
+        $container->set(
+            static::FACADE_ANTELOPE_TYPE,
+            fn() => $container->getLocator()->antelopeType()->facade()
+        );
+        return $container;
+    }
+
+    protected function addAntelopeLocationFacade(Container $container): Container
+    {
+        $container->set(
+            static::FACADE_ANTELOPE_LOCATION,
+            fn() => $container->getLocator()->antelopeLocation()->facade()
+        );
         return $container;
     }
 }

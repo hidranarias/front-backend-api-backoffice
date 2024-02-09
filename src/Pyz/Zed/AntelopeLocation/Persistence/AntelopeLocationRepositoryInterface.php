@@ -15,4 +15,9 @@ use Generated\Shared\Transfer\AntelopeLocationTransfer;
 interface AntelopeLocationRepositoryInterface
 {
     public function findAntelopeLocation(AntelopeLocationCriteriaTransfer $antelopeLocationCriteriaTransfer): ?AntelopeLocationTransfer;
+
+    /**
+     * @return array
+     */
+    public function getAntelopeLocation(): array;
 }

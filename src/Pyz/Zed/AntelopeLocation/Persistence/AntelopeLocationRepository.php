@@ -9,8 +9,10 @@ declare(strict_types=1);
 
 namespace Pyz\Zed\AntelopeLocation\Persistence;
 
+use Generated\Shared\Transfer\AntelopeLocationCollectionTransfer;
 use Generated\Shared\Transfer\AntelopeLocationCriteriaTransfer;
 use Generated\Shared\Transfer\AntelopeLocationTransfer;
+use Pyz\Zed\AntelopeLocation\Persistence\Mapper\AntelopeLocationMapper;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 
 /**
@@ -30,11 +32,22 @@ class AntelopeLocationRepository extends AbstractRepository implements AntelopeL
         return (new AntelopeLocationTransfer())->fromArray($antelopeLocationEntity->toArray());
     }
 
-    public function getAntelopeLocationCollection(AntelopeLocationCriteriaTransfer $antelopeLocationCriteriaTransfer
-    ): ?AntelopeLocationTransfer {
+    public function getAntelopeLocationCollection(?AntelopeLocationCriteriaTransfer $antelopeLocationCriteriaTransfer
+    ): AntelopeLocationCollectionTransfer {
         $antelopeLocationQuery = $this->getFactory()->createAntelopeLocationQuery();
+        $mapper = new AntelopeLocationMapper();
+        $antelopeCollectionEntities = $antelopeLocationQuery->find();
+        $antelopeLocationCollectionTransfer = new AntelopeLocationCollectionTransfer();
+        return $mapper->mapAntelopeLocationEntityCollectionToAntelopeCollectionTransfer(
+            $antelopeCollectionEntities,
+            $antelopeLocationCollectionTransfer
+        );
+    }
 
-
-        return (new AntelopeLocationTransfer())->fromArray($antelopeLocationEntity->toArray());
+    /**
+     * @return array
+     */
+    public function getAntelopeLocation(): array
+    {
     }
 }

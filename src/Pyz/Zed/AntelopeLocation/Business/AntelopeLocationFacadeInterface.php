@@ -9,9 +9,12 @@ declare(strict_types=1);
 
 namespace Pyz\Zed\AntelopeLocation\Business;
 
-use Generated\Shared\Transfer\AntelopeLocationTransfer;
+use Generated\Shared\Transfer\AntelopeLocationCollectionTransfer;
+use Generated\Shared\Transfer\AntelopeLocationCriteriaTransfer;
 
 interface AntelopeLocationFacadeInterface
 {
-    public function getAntelopeLocations(): AntelopeLocationTransfer;
+    public function getAntelopeLocationCollection(
+        ?AntelopeLocationCriteriaTransfer $antelopeLocationCriteriaTransfer = null
+    ): AntelopeLocationCollectionTransfer;
 }

@@ -17,8 +17,10 @@ class CreateController extends AbstractController
 
     public function indexAction(Request $request): ?array
     {
+        $options['data']['locations'] = $this->getFactory()->createAntelopeDataProvider()->getAntelopeLocations();
+
         $antelopeCreateForm = $this->getFactory()
-            ->createAntelopeCreateForm(new AntelopeTransfer())
+            ->createAntelopeCreateForm(new AntelopeTransfer(), $options)
             ->handleRequest($request);
 
         if ($antelopeCreateForm->isSubmitted() && $antelopeCreateForm->isValid()) {
@@ -30,6 +32,7 @@ class CreateController extends AbstractController
             'backUrl' => $this->getAntelopeOverviewUrl(),
         ]);
     }
+
 
     private function createAntelope($antelopeCreateForm): void
     {

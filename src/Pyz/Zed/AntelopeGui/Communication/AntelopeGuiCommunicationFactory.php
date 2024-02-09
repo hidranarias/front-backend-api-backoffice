@@ -13,6 +13,8 @@ use Pyz\Zed\Antelope\Business\AntelopeFacadeInterface;
 use Pyz\Zed\AntelopeGui\AntelopeGuiDependencyProvider;
 use Pyz\Zed\AntelopeGui\Communication\Table\AntelopeTable;
 use Pyz\Zed\AntelopeGui\Form\AntelopeCreateForm;
+use Pyz\Zed\AntelopeGui\Form\DataProvider\AntelopeDataProvider;
+use Pyz\Zed\AntelopeLocation\Business\AntelopeLocationFacadeInterface;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use Symfony\Component\Form\FormInterface;
 
@@ -21,11 +23,6 @@ use Symfony\Component\Form\FormInterface;
  */
 class AntelopeGuiCommunicationFactory extends AbstractCommunicationFactory
 {
-    public function getAntelopeFacade(): AntelopeFacadeInterface
-    {
-        return $this->getProvidedDependency(AntelopeGuiDependencyProvider::FACADE_ANTELOPE);
-    }
-
     public function createAntelopeTable(): AntelopeTable
     {
         return new AntelopeTable($this->getAntelopeQuery());
@@ -39,5 +36,28 @@ class AntelopeGuiCommunicationFactory extends AbstractCommunicationFactory
     public function createAntelopeCreateForm(AntelopeTransfer $antelopeTransfer, array $options = []): FormInterface
     {
         return $this->getFormFactory()->create(AntelopeCreateForm::class, $antelopeTransfer, $options);
+    }
+
+    public function createAntelopeDataProvider(): AntelopeDataProvider
+    {
+        return new AntelopeDataProvider(
+            $this->getAntelopeFacade(),
+            $this->getAntelopeLocationFacade(), $this->getAntelopeTypeFacade()
+        );
+    }
+
+    public function getAntelopeFacade(): AntelopeFacadeInterface
+    {
+        return $this->getProvidedDependency(AntelopeGuiDependencyProvider::FACADE_ANTELOPE);
+    }
+
+    public function getAntelopeLocationFacade(): AntelopeLocationFacadeInterface
+    {
+        return $this->getProvidedDependency(AntelopeGuiDependencyProvider::FACADE_ANTELOPE_LOCATION);
+    }
+
+    public function getAntelopeTypeFacade()
+    {
+        return $this->getProvidedDependency(AntelopeGuiDependencyProvider::FACADE_ANTELOPE_TYPE);
     }
 }
