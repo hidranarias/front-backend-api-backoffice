@@ -21,6 +21,7 @@ class AntelopeCreateForm extends AbstractType
 
     public function getBlockPrefix(): string
     {
+        parent::getBlockPrefix();
         return static::BLOCK_PREFIX;
     }
 
@@ -29,16 +30,16 @@ class AntelopeCreateForm extends AbstractType
         FormBuilderInterface $builder,
         array $options
     ): void {
-        $this->addNameFieled($builder);
-        $this->addColorFieled($builder);
-        $this->addGenderFieled($builder);
-        $this->addWeightFieled($builder);
-        $this->addAgeFieled($builder);
-        $this->addTypeFieled($builder, $options);
-        $this->addLocationFieled($builder, $options);
+        $this->addNameField($builder);
+        $this->addColorField($builder);
+        $this->addGenderField($builder);
+        $this->addWeightField($builder);
+        $this->addAgeField($builder);
+        $this->addTypeField($builder, $options);
+        $this->addLocationField($builder, $options);
     }
 
-    private function addNameFieled(FormBuilderInterface $builder): void
+    private function addNameField(FormBuilderInterface $builder): void
     {
         $builder->add(
             static::FIELD_NAME, TextType::class,
@@ -56,7 +57,7 @@ class AntelopeCreateForm extends AbstractType
         return new NotBlank();
     }
 
-    private function addColorFieled(FormBuilderInterface $builder): void
+    private function addColorField(FormBuilderInterface $builder): void
     {
         $builder->add(
             static::FIELD_COLOR, TextType::class,
@@ -69,7 +70,7 @@ class AntelopeCreateForm extends AbstractType
         );
     }
 
-    private function addGenderFieled(FormBuilderInterface $builder): void
+    private function addGenderField(FormBuilderInterface $builder): void
     {
         $builder->add(
             static::FIELD_GENDER, TextType::class,
@@ -82,7 +83,7 @@ class AntelopeCreateForm extends AbstractType
         );
     }
 
-    private function addWeightFieled(FormBuilderInterface $builder): void
+    private function addWeightField(FormBuilderInterface $builder): void
     {
         $builder->add(
             static::FIELD_WEIGHT, TextType::class,
@@ -95,7 +96,7 @@ class AntelopeCreateForm extends AbstractType
         );
     }
 
-    private function addAgeFieled(FormBuilderInterface $builder): void
+    private function addAgeField(FormBuilderInterface $builder): void
     {
         $builder->add(
             static::FIELD_AGE, TextType::class,
@@ -108,13 +109,15 @@ class AntelopeCreateForm extends AbstractType
         );
     }
 
-    private function addTypeFieled(FormBuilderInterface $builder, array $options): void
+    private function addTypeField(FormBuilderInterface $builder, array $options): void
     {
+        $choices = ['Select' => ''];
+        $choices += !empty($options['data']['locations']) ? $options['data']['locations'] : [];
         $builder->add(
             static::FIELD_TYPE, ChoiceType::class,
             [
                 'label' => 'Type',
-                'choices' => array_flip([1 => 'Type1', '2' => 'Type2']),
+                'choices' => $choices,
                 'constraints' => [
                     $this->createNotBlankConstraint(),
                 ],
@@ -122,7 +125,7 @@ class AntelopeCreateForm extends AbstractType
         );
     }
 
-    private function addLocationFieled(FormBuilderInterface $builder, array $options): void
+    private function addLocationField(FormBuilderInterface $builder, array $options): void
     {
         $choices = ['Select' => ''];
         $choices += !empty($options['data']['locations']) ? $options['data']['locations'] : [];

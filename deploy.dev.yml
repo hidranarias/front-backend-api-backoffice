@@ -7,6 +7,9 @@ environment: docker.dev
 image:
     tag: spryker/php:8.2
     php:
+        ini:
+            "upload_max_filesize": "248M"
+            "post_max_size": "248M"
     # enabled-extensions:
     #     - blackfire
     environment:

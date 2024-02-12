@@ -17,7 +17,10 @@ class CreateController extends AbstractController
 
     public function indexAction(Request $request): ?array
     {
-        $options['data']['locations'] = $this->getFactory()->createAntelopeDataProvider()->getAntelopeLocations();
+        $options['data']['locations'] = $this->getFactory()
+            ->createAntelopeDataProvider()->getAntelopeLocations();
+        $options['data']['types'] = $this->getFactory()
+            ->createAntelopeDataProvider()->getAntelopeTypes();
 
         $antelopeCreateForm = $this->getFactory()
             ->createAntelopeCreateForm(new AntelopeTransfer(), $options)
@@ -36,7 +39,8 @@ class CreateController extends AbstractController
 
     private function createAntelope($antelopeCreateForm): void
     {
-        $antelopeTransfer = $antelopeCreateForm->getData();
+        //dd($antelopeCreateForm->getData());
+        $antelopeTransfer = (new AntelopeTransfer())->fromArray($antelopeCreateForm->getData(), true);
         $this->getFactory()->getAntelopeFacade()->createAntelope($antelopeTransfer);
         $this->addSuccessMessage(static::MESSAGE_ANTELOPE_CREATED_SUCCESS);
 

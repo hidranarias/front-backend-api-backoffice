@@ -9,10 +9,14 @@ declare(strict_types=1);
 
 namespace Pyz\Zed\AntelopeType\Business\Reader;
 
+use Generated\Shared\Transfer\AntelopeTypeCollectionTransfer;
 use Generated\Shared\Transfer\AntelopeTypeCriteriaTransfer;
 use Generated\Shared\Transfer\AntelopeTypeTransfer;
 
 interface AntelopeTypeReaderInterface
 {
+    public function getAntelopeTypeCollection(?AntelopeTypeCriteriaTransfer $antelopeTypeCriteriaTransfer = null
+    ): AntelopeTypeCollectionTransfer;
+
     public function findAntelopeType(AntelopeTypeCriteriaTransfer $antelopeTypeCriteriaTransfer): AntelopeTypeTransfer;
 }

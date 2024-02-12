@@ -11,6 +11,7 @@ namespace Pyz\Zed\AntelopeType\Persistence;
 
 use Orm\Zed\AntelopeType\Persistence\PyzAntelopeTypeQuery;
 use Propel\Runtime\ActiveQuery\Criteria;
+use Pyz\Zed\AntelopeType\Persistence\Mapper\AntelopeTypeMapper;
 use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
 
 /**
@@ -23,5 +24,10 @@ class AntelopeTypePersistenceFactory extends AbstractPersistenceFactory
     public function createAntelopeTypeQuery(): Criteria|PyzAntelopeTypeQuery
     {
         return PyzAntelopeTypeQuery::create();
+    }
+
+    public function createAntelopeTypeMapper(): AntelopeTypeMapper
+    {
+        return new AntelopeTypeMapper();
     }
 }

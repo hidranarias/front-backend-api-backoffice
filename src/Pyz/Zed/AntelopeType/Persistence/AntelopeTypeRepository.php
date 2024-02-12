@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Pyz\Zed\AntelopeType\Persistence;
 
+use Generated\Shared\Transfer\AntelopeTypeCollectionTransfer;
 use Generated\Shared\Transfer\AntelopeTypeCriteriaTransfer;
 use Generated\Shared\Transfer\AntelopeTypeTransfer;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
@@ -29,4 +30,16 @@ class AntelopeTypeRepository extends AbstractRepository implements AntelopeTypeR
 
         return (new AntelopeTypeTransfer())->fromArray($antelopeTypeEntity->toArray());
     }
+
+    public function getAntelopeTypeCollection(?AntelopeTypeCriteriaTransfer $antelopeTypeCriteriaTransfer = null
+    ): AntelopeTypeCollectionTransfer {
+        $mapper = $this->getFactory()->createAntelopeTypeMapper();
+        $antelopeTypeQuery = $this->getFactory()->createAntelopeTypeQuery();
+        $antelopeTypeEntities = $antelopeTypeQuery->find();
+        return $mapper->mapAntelopeTypeEntityCollectionToAntelopeTypeCollectionTransfer(
+            $antelopeTypeEntities,
+            new AntelopeTypeCollectionTransfer()
+        );
+    }
+
 }

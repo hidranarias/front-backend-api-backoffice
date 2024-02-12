@@ -22,7 +22,6 @@ class AntelopeDataProvider
 
     public function getData(): void
     {
-        //return $this->antelopeFacade->
     }
 
     /**
@@ -39,15 +38,17 @@ class AntelopeDataProvider
         return $res;
     }
 
+    /**
+     * return array<string,int>
+     */
     public function getAntelopeTypes(): array
     {
-        //TODO: implement
-        //  $locationsCollection = $this->antelopeTypeFacade->getAntelopeLocationCollection();
-        $res = [];
-//        foreach ($locationsCollection->getAntelopeLocations() as $location) {
-//            $res[$location->getLocationName()] = $location->getId();
-//        }
-//        ksort($res);
+        $antelopeTypes = $this->antelopeTypeFacade->getAntelopeTypeCollection();
+        $res = ['' => 'Select'];
+        foreach ($antelopeTypes->getAntelopeTypes() as $type) {
+            $res[$type->getTypeName()] = $type->getId();
+        }
+        ksort($res);
         return $res;
     }
 }

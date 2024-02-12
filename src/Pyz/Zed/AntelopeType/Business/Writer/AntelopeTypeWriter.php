@@ -13,13 +13,8 @@ use Pyz\Zed\AntelopeType\Persistence\AntelopeTypeEntityManagerInterface;
 
 class AntelopeTypeWriter implements AntelopeTypeWriterInterface
 {
-    private AntelopeTypeEntityManagerInterface $antelopeTypeEntityManager;
 
-    /**
-     * @param \Pyz\Zed\AntelopeType\Persistence\AntelopeTypeEntityManagerInterface $antelopeTypeEntityManager
-     */
-    public function __construct(AntelopeTypeEntityManagerInterface $antelopeTypeEntityManager)
+    public function __construct(private readonly AntelopeTypeEntityManagerInterface $antelopeTypeEntityManager)
     {
-        $this->antelopeTypeEntityManager = $antelopeTypeEntityManager;
     }
 }

@@ -16,4 +16,17 @@ use Spryker\Zed\Kernel\Persistence\AbstractEntityManager;
  */
 class AntelopeTypeEntityManager extends AbstractEntityManager implements AntelopeTypeEntityManagerInterface
 {
+    /**
+     * @return \Pyz\Zed\AntelopeType\Persistence\AntelopeTypeTransfer
+     */
+    public function createAntelopeType(): AntelopeTypeTransfer
+    {
+    }
+
+    /**
+     * @return \Pyz\Zed\AntelopeType\Persistence\AntelopeTypeResponseTransfer
+     */
+    public function deleteAntelopeType(): AntelopeTypeResponseTransfer
+    {
+    }
 }
