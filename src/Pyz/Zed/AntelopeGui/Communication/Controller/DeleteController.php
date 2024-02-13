@@ -11,13 +11,13 @@ use Symfony\Component\HttpFoundation\Request;
  * @method \Pyz\Zed\AntelopeGui\Communication\AntelopeGuiCommunicationFactory getFactory()
  * @method \Pyz\Zed\AntelopeGui\Business\AntelopeGuiFacadeInterface getFacade()
  */
-class EditController extends AbstractController
+class DeleteController extends AbstractController
 {
-    protected const MESSAGE_ANTELOPE_UPDATED_SUCCESS = 'Antelope updated!';
+    protected const MESSAGE_ANTELOPE_UPDATED_SUCCESS = 'Antelope deleted!';
     protected const URL_ANTELOPE_OVERVIEW = '/antelope-gui';
     protected const ID_ANTELOPE = 'idAntelope';
     protected const ANTELOPE_NOT_FOUND_MSG = 'Antelope not found';
-    protected const MESSAGE_ANTELOPE_UPDATED_FAILURE = 'Problem saving antelope';
+    protected const MESSAGE_ANTELOPE_UPDATED_FAILURE = 'Problem deleting antelope';
 
 
     public function indexAction(Request $request): array|RedirectResponse
@@ -32,31 +32,32 @@ class EditController extends AbstractController
         }
         $data = $antelopeDataProvider->getData($idAntelope);
 
-        $antelopeUpdateForm = $this->getFactory()
-            ->createAntelopeUpdateForm($data, $options)
+        $antelopeDeleteForm = $this->getFactory()
+            ->createAntelopeDeleteForm($data, $options)
             ->handleRequest($request);
 
-        if ($antelopeUpdateForm->isSubmitted() && $antelopeUpdateForm->isValid()) {
-            return $this->updateAntelope($antelopeUpdateForm);
+        if ($antelopeDeleteForm->isSubmitted() && $antelopeDeleteForm->isValid()) {
+            return $this->deleteAntelope($antelopeDeleteForm);
         }
 
         return $this->viewResponse([
-            'antelopeUpdateForm' => $antelopeUpdateForm->createView(),
+            'antelopeDeleteForm' => $antelopeDeleteForm->createView(),
             'backUrl' => $this->getAntelopeOverviewUrl(),
         ]);
+        return $options;
     }
 
-    private function updateAntelope($antelopeCreateForm): RedirectResponse
+    private function deleteAntelope($antelopeCreateForm): RedirectResponse
     {
         //dd($antelopeCreateForm->getData());
         $antelopeTransfer = $antelopeCreateForm->getData();
-        $res = $this->getFactory()->getAntelopeFacade()->updateAntelope($antelopeTransfer);
+        $res = $this->getFactory()->getAntelopeFacade()->deleteAntelope($antelopeTransfer);
         if ($res) {
             $this->addSuccessMessage(static::MESSAGE_ANTELOPE_UPDATED_SUCCESS);
         } else {
             $this->addErrorMessage(static::MESSAGE_ANTELOPE_UPDATED_FAILURE);
         }
-
+    
 
         return $this->redirectResponse($this->getAntelopeOverviewUrl());
     }

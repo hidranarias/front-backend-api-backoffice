@@ -29,11 +29,10 @@ class AntelopeEntityManager extends AbstractEntityManager implements AntelopeEnt
 
     public function deleteAntelope(AntelopeTransfer $antelopeTransfer): bool
     {
-        $antelopeEntity = new PyzAntelope();
-        $antelopeEntity->fromArray($antelopeTransfer->modifiedToArray());
-        $antelopeEntity->delete();
+        $res = $this->getFactory()->createAntelopeQuery()->
+        filterByIdantelope($antelopeTransfer->getIdAntelope())->delete();
 
-        return $antelopeEntity->isDeleted();
+        return (bool)$res;
     }
 
     public function updateAntelope($antelopeTransfer): bool
@@ -50,4 +49,6 @@ class AntelopeEntityManager extends AbstractEntityManager implements AntelopeEnt
         $antelopeEntity->save();
         return true;
     }
+
+
 }

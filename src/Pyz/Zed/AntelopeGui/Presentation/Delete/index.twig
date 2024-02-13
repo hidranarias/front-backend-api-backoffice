@@ -1,0 +1,23 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% set widget_title = 'Delete Antelope' | trans %}
+
+{% block action %}
+    {{ backActionButton(backUrl, 'Back to antelope list' | trans) }}
+{% endblock %}
+
+{% block content %}
+    {% embed '@Gui/Partials/widget.twig' %}
+        {% block widget_content %}
+            {{ form_start(antelopeDeleteForm) }}
+
+            {% for field in antelopeDeleteForm.children %}
+                {{ form_row(field) }}
+            {% endfor %}
+
+            <input type="submit" class="btn btn-primary safe-submit" value="{{ 'Delete' | trans }}"/>
+
+            {{ form_end(antelopeDeleteForm) }}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

@@ -12,6 +12,7 @@ use Orm\Zed\Antelope\Persistence\PyzAntelopeQuery;
 use Pyz\Zed\Antelope\Business\AntelopeFacadeInterface;
 use Pyz\Zed\AntelopeGui\AntelopeGuiDependencyProvider;
 use Pyz\Zed\AntelopeGui\Communication\Form\AntelopeCreateForm;
+use Pyz\Zed\AntelopeGui\Communication\Form\AntelopeDeleteForm;
 use Pyz\Zed\AntelopeGui\Communication\Form\AntelopeUpdateForm;
 use Pyz\Zed\AntelopeGui\Communication\Form\DataProvider\AntelopeDataProvider;
 use Pyz\Zed\AntelopeGui\Communication\Table\AntelopeTable;
@@ -37,6 +38,11 @@ class AntelopeGuiCommunicationFactory extends AbstractCommunicationFactory
     public function createAntelopeCreateForm(AntelopeTransfer $antelopeTransfer, array $options = []): FormInterface
     {
         return $this->getFormFactory()->create(AntelopeCreateForm::class, $antelopeTransfer, $options);
+    }
+
+    public function createAntelopeDeleteForm(AntelopeTransfer $antelopeTransfer, array $options = []): FormInterface
+    {
+        return $this->getFormFactory()->create(AntelopeDeleteForm::class, $antelopeTransfer, $options);
     }
 
     public function createAntelopeUpdateForm(AntelopeTransfer $antelopeTransfer, array $options = []): FormInterface
