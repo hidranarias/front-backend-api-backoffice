@@ -5,6 +5,7 @@ namespace Pyz\Zed\AntelopeGui\Communication\Controller;
 use Generated\Shared\Transfer\AntelopeTransfer;
 use Spryker\Service\UtilText\Model\Url\Url;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -15,19 +16,17 @@ class CreateController extends AbstractController
     protected const MESSAGE_ANTELOPE_CREATED_SUCCESS = 'Antelope created!';
     protected const URL_ANTELOPE_OVERVIEW = '/antelope-gui';
 
-    public function indexAction(Request $request): ?array
+    public function indexAction(Request $request): array|RedirectResponse
     {
-        $options['data']['locations'] = $this->getFactory()
-            ->createAntelopeDataProvider()->getAntelopeLocations();
-        $options['data']['types'] = $this->getFactory()
-            ->createAntelopeDataProvider()->getAntelopeTypes();
-
+        $options = $this->getFactory()
+            ->createAntelopeDataProvider()->getOptions();
+        //  dd($options);
         $antelopeCreateForm = $this->getFactory()
             ->createAntelopeCreateForm(new AntelopeTransfer(), $options)
             ->handleRequest($request);
 
         if ($antelopeCreateForm->isSubmitted() && $antelopeCreateForm->isValid()) {
-            $this->createAntelope($antelopeCreateForm);
+            return $this->createAntelope($antelopeCreateForm);
         }
 
         return $this->viewResponse([
@@ -37,14 +36,13 @@ class CreateController extends AbstractController
     }
 
 
-    private function createAntelope($antelopeCreateForm): void
+    private function createAntelope($antelopeCreateForm): RedirectResponse
     {
-        //dd($antelopeCreateForm->getData());
-        $antelopeTransfer = (new AntelopeTransfer())->fromArray($antelopeCreateForm->getData(), true);
+        $antelopeTransfer = $antelopeCreateForm->getData();
         $this->getFactory()->getAntelopeFacade()->createAntelope($antelopeTransfer);
         $this->addSuccessMessage(static::MESSAGE_ANTELOPE_CREATED_SUCCESS);
 
-        $this->redirectResponse($this->getAntelopeOverviewUrl());
+        return $this->redirectResponse($this->getAntelopeOverviewUrl());
     }
 
     /**

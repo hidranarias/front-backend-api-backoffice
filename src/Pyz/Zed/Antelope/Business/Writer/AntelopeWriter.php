@@ -25,4 +25,9 @@ class AntelopeWriter implements AntelopeWriterInterface
     {
         return $this->antelopeEntityManager->deleteAntelope($antelopeTransfer);
     }
+
+    public function updateAntelope($antelopeTransfer)
+    {
+        return $this->antelopeEntityManager->updateAntelope($antelopeTransfer);
+    }
 }

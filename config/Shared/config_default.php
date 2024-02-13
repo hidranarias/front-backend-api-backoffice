@@ -155,7 +155,7 @@ $config[RouterConstants::YVES_SSL_EXCLUDED_ROUTE_NAMES] = [
 $config[RouterConstants::ZED_SSL_EXCLUDED_ROUTE_NAMES] = [
     'healthCheck' => 'health-check/index',
 ];
-
+$config[RouterConstants::BACKOFFICE_IS_CACHE_ENABLED] = true;
 // >>> DEV TOOLS
 
 $config[ConsoleConstants::ENABLE_DEVELOPMENT_CONSOLE_COMMANDS] = (bool)getenv('DEVELOPMENT_CONSOLE_COMMANDS');
@@ -248,12 +248,13 @@ $config[OauthConstants::PRIVATE_KEY_PATH] = str_replace(
 $config[OauthConstants::PUBLIC_KEY_PATH]
     = $config[OauthCryptographyConstants::PUBLIC_KEY_PATH]
     = str_replace(
-        '__LINE__',
-        PHP_EOL,
-        getenv('SPRYKER_OAUTH_KEY_PUBLIC') ?: '',
-    ) ?: null;
+    '__LINE__',
+    PHP_EOL,
+    getenv('SPRYKER_OAUTH_KEY_PUBLIC') ?: '',
+) ?: null;
 $config[OauthConstants::ENCRYPTION_KEY] = getenv('SPRYKER_OAUTH_ENCRYPTION_KEY') ?: null;
-$config[OauthConstants::OAUTH_CLIENT_CONFIGURATION] = json_decode(getenv('SPRYKER_OAUTH_CLIENT_CONFIGURATION'), true) ?: [];
+$config[OauthConstants::OAUTH_CLIENT_CONFIGURATION] = json_decode(getenv('SPRYKER_OAUTH_CLIENT_CONFIGURATION'),
+    true) ?: [];
 
 // >> ZED REQUEST
 
@@ -362,8 +363,10 @@ $config[StorageRedisConstants::STORAGE_REDIS_HOST] = getenv('SPRYKER_KEY_VALUE_S
 $config[StorageRedisConstants::STORAGE_REDIS_PORT] = getenv('SPRYKER_KEY_VALUE_STORE_PORT');
 $config[StorageRedisConstants::STORAGE_REDIS_PASSWORD] = getenv('SPRYKER_KEY_VALUE_STORE_PASSWORD');
 $config[StorageRedisConstants::STORAGE_REDIS_DATABASE] = getenv('SPRYKER_KEY_VALUE_STORE_NAMESPACE') ?: 1;
-$config[StorageRedisConstants::STORAGE_REDIS_DATA_SOURCE_NAMES] = json_decode(getenv('SPRYKER_KEY_VALUE_STORE_SOURCE_NAMES') ?: '[]', true) ?: [];
-$config[StorageRedisConstants::STORAGE_REDIS_CONNECTION_OPTIONS] = json_decode(getenv('SPRYKER_KEY_VALUE_STORE_CONNECTION_OPTIONS') ?: '[]', true) ?: [];
+$config[StorageRedisConstants::STORAGE_REDIS_DATA_SOURCE_NAMES] = json_decode(getenv('SPRYKER_KEY_VALUE_STORE_SOURCE_NAMES') ?: '[]',
+    true) ?: [];
+$config[StorageRedisConstants::STORAGE_REDIS_CONNECTION_OPTIONS] = json_decode(getenv('SPRYKER_KEY_VALUE_STORE_CONNECTION_OPTIONS') ?: '[]',
+    true) ?: [];
 
 // >>> SESSION
 
@@ -608,10 +611,10 @@ $config[ApplicationConstants::BASE_URL_YVES]
     = $config[ProductManagementConstants::BASE_URL_YVES]
     = $config[NewsletterConstants::BASE_URL_YVES]
     = sprintf(
-        'https://%s%s',
-        $yvesHost,
-        $yvesPort !== 443 ? ':' . $yvesPort : '',
-    );
+    'https://%s%s',
+    $yvesHost,
+    $yvesPort !== 443 ? ':' . $yvesPort : '',
+);
 
 $config[ShopUiConstants::YVES_ASSETS_URL_PATTERN] = '/assets/' . (getenv('SPRYKER_BUILD_HASH') ?: 'current') . '/%theme%/';
 
@@ -635,10 +638,10 @@ $glueHost = getenv('SPRYKER_API_HOST') ?: 'localhost';
 $gluePort = (int)(getenv('SPRYKER_API_PORT')) ?: 443;
 $config[GlueApplicationConstants::GLUE_APPLICATION_DOMAIN]
     = sprintf(
-        'https://%s%s',
-        $glueHost,
-        $gluePort !== 443 ? ':' . $gluePort : '',
-    );
+    'https://%s%s',
+    $glueHost,
+    $gluePort !== 443 ? ':' . $gluePort : '',
+);
 
 if (class_exists(TestifyConstants::class)) {
     $config[TestifyConstants::GLUE_APPLICATION_DOMAIN] = $config[GlueApplicationConstants::GLUE_APPLICATION_DOMAIN];

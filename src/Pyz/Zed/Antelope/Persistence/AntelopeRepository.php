@@ -12,7 +12,9 @@ namespace Pyz\Zed\Antelope\Persistence;
 use Generated\Shared\Transfer\AntelopeCollectionTransfer;
 use Generated\Shared\Transfer\AntelopeCriteriaTransfer;
 use Generated\Shared\Transfer\PaginationTransfer;
+use Orm\Zed\Antelope\Persistence\Map\PyzAntelopeTableMap;
 use Orm\Zed\Antelope\Persistence\PyzAntelopeQuery;
+use Orm\Zed\AntelopeType\Persistence\Map\PyzAntelopeTypeTableMap;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
@@ -28,17 +30,22 @@ class AntelopeRepository extends AbstractRepository implements AntelopeRepositor
     ): AntelopeCollectionTransfer {
         $antelopeCollectionTransfer = new AntelopeCollectionTransfer();
         $antelopeEntities = $this->getFactory()->createAntelopeQuery();
-        $columnArray = ['name', 'type', 'idAntelope', 'color'];
-        $antelopeEntities->withPyzAntelopeLocationQuery()->withPyzAntelopeTypeQuery()->select($columnArray);
-        $this->applyAntelopeSearch($antelopeEntities, $antelopeCriteriaTransfer);
-        $this->applyAntelopeSorting($antelopeEntities, $antelopeCriteriaTransfer);
+        $columnArray = [
+            PyzAntelopeTableMap::COL_NAME,
+            PyzAntelopeTypeTableMap::COL_TYPE_NAME,
+            PyzAntelopeTableMap::COL_IDANTELOPE,
+            PyzAntelopeTableMap::COL_COLOR
+        ];
+        $antelopeEntities->joinWithPyzAntelopeLocation()->joinWithPyzAntelopeType();//->select($columnArray);
+        $antelopeEntities = $this->applyAntelopeSearch($antelopeEntities, $antelopeCriteriaTransfer);
+        $antelopeEntities = $this->applyAntelopeSorting($antelopeEntities, $antelopeCriteriaTransfer);
         $paginationTransfer = $antelopeCriteriaTransfer->getPagination();
         if ($paginationTransfer !== null) {
-            $this->applyPagination($antelopeEntities, $paginationTransfer);
+            $antelopeEntities = $antelopeEntities = $this->applyPagination($antelopeEntities, $paginationTransfer);
             $antelopeCollectionTransfer->setPagination($paginationTransfer);
         }
         $objectCollection = $antelopeEntities->find();
-        dd($objectCollection);
+
         return $this->getFactory()->createAntelopeMapper()->mapAntelopeEntityToAntelopeCollectionTransfer(
             $objectCollection,
             $antelopeCollectionTransfer
@@ -50,6 +57,7 @@ class AntelopeRepository extends AbstractRepository implements AntelopeRepositor
         AntelopeCriteriaTransfer $antelopeCriteriaTransfer
     ): PyzAntelopeQuery {
         $antelopeConditions = $antelopeCriteriaTransfer->getAntelopeConditions();
+       
         if (!$antelopeConditions) {
             return $antelopeEntities;
         }

@@ -46,6 +46,11 @@ class AntelopeMapper implements AntelopeMapperInterface
         return $antelopeTransfer->fromArray($antelope->toArray(), true);
     }
 
+    /**
+     * @param ObjectCollection<PyzAntelope> $antelopeEntityCollection
+     * @param AntelopeCollectionTransfer $antelopeCollectionTransfer
+     * @return AntelopeCollectionTransfer
+     */
     public function mapAntelopeEntityToAntelopeCollectionTransfer(
         ObjectCollection $antelopeEntityCollection,
         AntelopeCollectionTransfer $antelopeCollectionTransfer

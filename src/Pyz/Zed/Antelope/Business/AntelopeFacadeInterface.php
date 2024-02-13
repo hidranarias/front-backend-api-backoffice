@@ -21,4 +21,5 @@ interface AntelopeFacadeInterface
 
     public function createAntelope($antelopeTransfer);
 
+    public function updateAntelope($antelopeTransfer);
 }

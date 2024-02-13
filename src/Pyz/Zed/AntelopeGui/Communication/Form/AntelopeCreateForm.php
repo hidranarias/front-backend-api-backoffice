@@ -1,11 +1,12 @@
 <?php
 
-namespace Pyz\Zed\AntelopeGui\Form;
+namespace Pyz\Zed\AntelopeGui\Communication\Form;
 
 use Spryker\Zed\Kernel\Communication\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class AntelopeCreateForm extends AbstractType
@@ -18,6 +19,13 @@ class AntelopeCreateForm extends AbstractType
     protected const FIELD_TYPE = 'typeId';
     protected const FIELD_LOCATION = 'LocationId';
     protected const BLOCK_PREFIX = 'antelope';
+    public const ANTELOPE_LOCATIONS = 'locations';
+    public const ANTELOPE_TYPES = 'types';
+
+    public function getName(): string
+    {
+        return $this->getBlockPrefix();
+    }
 
     public function getBlockPrefix(): string
     {
@@ -25,11 +33,17 @@ class AntelopeCreateForm extends AbstractType
         return static::BLOCK_PREFIX;
     }
 
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([static::ANTELOPE_LOCATIONS => [], static::ANTELOPE_TYPES => []]);
+        parent::configureOptions($resolver);
+    }
 
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
     ): void {
+        parent::buildForm($builder, $options);
         $this->addNameField($builder);
         $this->addColorField($builder);
         $this->addGenderField($builder);
@@ -112,7 +126,7 @@ class AntelopeCreateForm extends AbstractType
     private function addTypeField(FormBuilderInterface $builder, array $options): void
     {
         $choices = ['Select' => ''];
-        $choices += !empty($options['data']['locations']) ? $options['data']['locations'] : [];
+        $choices += !empty($options[static::ANTELOPE_LOCATIONS]) ? $options[static::ANTELOPE_LOCATIONS] : [];
         $builder->add(
             static::FIELD_TYPE, ChoiceType::class,
             [
@@ -128,7 +142,7 @@ class AntelopeCreateForm extends AbstractType
     private function addLocationField(FormBuilderInterface $builder, array $options): void
     {
         $choices = ['Select' => ''];
-        $choices += !empty($options['data']['locations']) ? $options['data']['locations'] : [];
+        $choices += !empty($options[static::ANTELOPE_TYPES]) ? $options[static::ANTELOPE_TYPES] : [];
 
         $builder->add(
             static::FIELD_LOCATION, ChoiceType::class,

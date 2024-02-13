@@ -1,8 +1,12 @@
 <?php
 
-namespace Pyz\Zed\AntelopeGui\Form\DataProvider;
+namespace Pyz\Zed\AntelopeGui\Communication\Form\DataProvider;
 
+use Generated\Shared\Transfer\AntelopeConditionsTransfer;
+use Generated\Shared\Transfer\AntelopeCriteriaTransfer;
+use Generated\Shared\Transfer\AntelopeTransfer;
 use Pyz\Zed\Antelope\Business\AntelopeFacadeInterface;
+use Pyz\Zed\AntelopeGui\Communication\Form\AntelopeCreateForm;
 use Pyz\Zed\AntelopeLocation\Business\AntelopeLocationFacadeInterface;
 use Pyz\Zed\AntelopeType\Business\AntelopeTypeFacadeInterface;
 
@@ -20,8 +24,23 @@ class AntelopeDataProvider
     ) {
     }
 
-    public function getData(): void
+    public function getData(int $idAntelope): AntelopeTransfer
     {
+        $antelopeCriteriaTransfer = new AntelopeCriteriaTransfer();
+        $conditions = new AntelopeConditionsTransfer();
+        $conditions->setIdAntelope($idAntelope);
+        $antelopeCriteriaTransfer->setAntelopeConditions($conditions);
+        return $this->antelopeFacade->
+        getAntelopeCollection($antelopeCriteriaTransfer)
+            ->getAntelopes()->getIterator()->current();
+    }
+
+    public function getOptions(): array
+    {
+        return [
+            AntelopeCreateForm::ANTELOPE_LOCATIONS => $this->getAntelopeLocations(),
+            AntelopeCreateForm::ANTELOPE_TYPES => $this->getAntelopeTypes()
+        ];
     }
 
     /**
@@ -44,7 +63,7 @@ class AntelopeDataProvider
     public function getAntelopeTypes(): array
     {
         $antelopeTypes = $this->antelopeTypeFacade->getAntelopeTypeCollection();
-        $res = ['' => 'Select'];
+        $res = ['' => '-'];
         foreach ($antelopeTypes->getAntelopeTypes() as $type) {
             $res[$type->getTypeName()] = $type->getId();
         }

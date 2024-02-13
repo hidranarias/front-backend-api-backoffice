@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Pyz\Zed\Antelope\Business\Reader;
 
+use Generated\Shared\Transfer\AntelopeCollectionTransfer;
 use Generated\Shared\Transfer\AntelopeCriteriaTransfer;
 use Pyz\Zed\Antelope\Persistence\AntelopeRepositoryInterface;
 
@@ -24,8 +25,8 @@ class AntelopeReader implements AntelopeReaderInterface
         $this->antelopeRepository = $antelopeRepository;
     }
 
-    public function getAntelopeTypeCollection(AntelopeCriteriaTransfer $antelopeCriteriaTransfer
-    ): AntelopeTypeCollectionTransfer {
+    public function getAntelopeCollection(AntelopeCriteriaTransfer $antelopeCriteriaTransfer
+    ): AntelopeCollectionTransfer {
         return $this->antelopeRepository->getAntelopeCollection($antelopeCriteriaTransfer);
     }
 

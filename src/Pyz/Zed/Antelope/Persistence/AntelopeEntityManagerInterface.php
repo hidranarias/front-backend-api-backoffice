@@ -16,4 +16,6 @@ interface AntelopeEntityManagerInterface
     public function createAntelope(AntelopeTransfer $antelopeTransfer): AntelopeTransfer;
 
     public function deleteAntelope(AntelopeTransfer $antelopeTransfer): bool;
+
+    public function updateAntelope(AntelopeTransfer $antelopeTransfer);
 }
