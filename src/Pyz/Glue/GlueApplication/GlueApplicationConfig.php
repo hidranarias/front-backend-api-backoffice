@@ -31,9 +31,9 @@ class GlueApplicationConfig extends SprykerGlueApplicationConfig
     }
 
     /**
+     * @return bool
      * @deprecated Will be removed without replacement.
      *
-     * @return bool
      */
     public function isEagerRelationshipsLoadingEnabled(): bool
     {
@@ -54,7 +54,9 @@ class GlueApplicationConfig extends SprykerGlueApplicationConfig
     public function getRoutePatternsAllowedForCacheWarmUp(): array
     {
         return [
-            '/^\/dynamic-entity\/.+/', // @see {@link \Spryker\Glue\DynamicEntityBackendApi\DynamicEntityBackendApiConfig::getRoutePrefix()}
+            '/*/',
+            '/^\/dynamic-entity\/.+/',
+            // @see {@link \Spryker\Glue\DynamicEntityBackendApi\DynamicEntityBackendApiConfig::getRoutePrefix()}
         ];
     }
 

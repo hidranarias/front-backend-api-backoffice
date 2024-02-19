@@ -12,9 +12,7 @@ namespace Pyz\Zed\Antelope\Persistence;
 use Generated\Shared\Transfer\AntelopeCollectionTransfer;
 use Generated\Shared\Transfer\AntelopeCriteriaTransfer;
 use Generated\Shared\Transfer\PaginationTransfer;
-use Orm\Zed\Antelope\Persistence\Map\PyzAntelopeTableMap;
 use Orm\Zed\Antelope\Persistence\PyzAntelopeQuery;
-use Orm\Zed\AntelopeType\Persistence\Map\PyzAntelopeTypeTableMap;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
@@ -30,18 +28,14 @@ class AntelopeRepository extends AbstractRepository implements AntelopeRepositor
     ): AntelopeCollectionTransfer {
         $antelopeCollectionTransfer = new AntelopeCollectionTransfer();
         $antelopeEntities = $this->getFactory()->createAntelopeQuery();
-        $columnArray = [
-            PyzAntelopeTableMap::COL_NAME,
-            PyzAntelopeTypeTableMap::COL_TYPE_NAME,
-            PyzAntelopeTableMap::COL_IDANTELOPE,
-            PyzAntelopeTableMap::COL_COLOR
-        ];
+
         $antelopeEntities->joinWithPyzAntelopeLocation()->joinWithPyzAntelopeType();//->select($columnArray);
-        $antelopeEntities = $this->applyAntelopeSearch($antelopeEntities, $antelopeCriteriaTransfer);
-        $antelopeEntities = $this->applyAntelopeSorting($antelopeEntities, $antelopeCriteriaTransfer);
+        $this->applyAntelopeSearch($antelopeEntities, $antelopeCriteriaTransfer);
+        $this->applyAntelopeSorting($antelopeEntities, $antelopeCriteriaTransfer);
         $paginationTransfer = $antelopeCriteriaTransfer->getPagination();
+
         if ($paginationTransfer !== null) {
-            $antelopeEntities = $antelopeEntities = $this->applyPagination($antelopeEntities, $paginationTransfer);
+            $this->applyPagination($antelopeEntities, $paginationTransfer);
             $antelopeCollectionTransfer->setPagination($paginationTransfer);
         }
         $objectCollection = $antelopeEntities->find();
@@ -57,10 +51,8 @@ class AntelopeRepository extends AbstractRepository implements AntelopeRepositor
         AntelopeCriteriaTransfer $antelopeCriteriaTransfer
     ): PyzAntelopeQuery {
         $antelopeConditions = $antelopeCriteriaTransfer->getAntelopeConditions();
-       
-        if (!$antelopeConditions) {
-            return $antelopeEntities;
-        }
+
+
         if ($antelopeConditions->getName() !== null) {
             $antelopeEntities->_or()->filterByName_Like(
                 sprintf('%%%s%%', $antelopeConditions->getName())
@@ -69,7 +61,7 @@ class AntelopeRepository extends AbstractRepository implements AntelopeRepositor
         if ($antelopeConditions->getIdAntelope() !== null) {
             $antelopeEntities->_or()->filterByIdantelope($antelopeConditions->getIdAntelope());
         }
-        if ($antelopeConditions->getAntelopeIds() !== null) {
+        if ($antelopeConditions->getAntelopeIds()) {
             $antelopeEntities->_or()->filterByIdantelope_In($antelopeConditions->getAntelopeIds());
         }
         if ($antelopeConditions->getIdLocation() !== null) {
@@ -78,9 +70,9 @@ class AntelopeRepository extends AbstractRepository implements AntelopeRepositor
         if ($antelopeConditions->getIdType() !== null) {
             $antelopeEntities->_or()->filterByTypeId($antelopeConditions->getIdType());
         }
+       
         return $antelopeEntities;
     }
-
 
     protected function applyAntelopeSorting(
         ModelCriteria $modelCriteria,

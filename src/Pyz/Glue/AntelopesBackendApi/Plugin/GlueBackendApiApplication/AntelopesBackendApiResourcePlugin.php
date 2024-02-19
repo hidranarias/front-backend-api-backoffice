@@ -8,8 +8,9 @@ use Generated\Shared\Transfer\GlueResourceMethodConfigurationTransfer;
 use Pyz\Glue\AntelopesBackendApi\AntelopesBackendApiConfig;
 use Pyz\Glue\AntelopesBackendApi\Controller\AntelopesResourceController;
 use Spryker\Glue\GlueApplication\Plugin\GlueApplication\Backend\AbstractResourcePlugin;
+use Spryker\Glue\GlueJsonApiConventionExtension\Dependency\Plugin\JsonApiResourceInterface;
 
-class AntelopesBackendApiResourcePlugin extends AbstractResourcePlugin
+class AntelopesBackendApiResourcePlugin extends AbstractResourcePlugin implements JsonApiResourceInterface
 {
 
     public function getType(): string

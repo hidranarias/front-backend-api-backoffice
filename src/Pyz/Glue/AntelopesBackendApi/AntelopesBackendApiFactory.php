@@ -9,6 +9,10 @@ namespace Pyz\Glue\AntelopesBackendApi;
 
 use Pyz\Glue\AntelopesBackendApi\Processor\Mapper\AntelopeMapper;
 use Pyz\Glue\AntelopesBackendApi\Processor\Mapper\AntelopeMapperInterface;
+use Pyz\Glue\AntelopesBackendApi\Processor\Reader\AntelopeReader;
+use Pyz\Glue\AntelopesBackendApi\Processor\Reader\AntelopeReaderInterface;
+use Pyz\Glue\AntelopesBackendApi\Processor\ResponseBuilder\AntelopeResponseBuilder;
+use Pyz\Glue\AntelopesBackendApi\Processor\ResponseBuilder\AntelopeResponseBuilderInterface;
 use Pyz\Zed\Antelope\Business\AntelopeFacadeInterface;
 use Spryker\Glue\Kernel\Backend\AbstractFactory;
 
@@ -20,8 +24,18 @@ class AntelopesBackendApiFactory extends AbstractFactory
         return new AntelopeMapper();
     }
 
+    public function createAntelopesReader(): AntelopeReaderInterface
+    {
+        return new AntelopeReader($this->getAntelopeFacade(), $this->createAntelopeResponseBuilder());
+    }
+
     public function getAntelopeFacade(): AntelopeFacadeInterface
     {
         return $this->getProvidedDependency(AntelopesBackendApiDependencyProvider::FACADE_ANTELOPE);
+    }
+
+    public function createAntelopeResponseBuilder(): AntelopeResponseBuilderInterface
+    {
+        return new AntelopeResponseBuilder();
     }
 }

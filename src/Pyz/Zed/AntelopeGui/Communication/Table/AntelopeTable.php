@@ -19,6 +19,7 @@ class AntelopeTable extends AbstractTable
 
     protected const COL_ID_ANTELOPE = PyzAntelopeTableMap::COL_IDANTELOPE;
     protected const COL_NAME = PyzAntelopeTableMap::COL_NAME;
+    protected const COL_AGE = PyzAntelopeTableMap::COL_AGE;
     protected const COL_COLOR = PyzAntelopeTableMap::COL_COLOR;
     protected const COL_LOCATION = PyzAntelopeLocationTableMap::COL_LOCATION_NAME;
     protected const COL_TYPE = PyzAntelopeTypeTableMap::COL_TYPE_NAME;
@@ -41,8 +42,10 @@ class AntelopeTable extends AbstractTable
         $config->setHeader([
             static::COL_ID_ANTELOPE => 'Antelope ID',
             static::COL_NAME => 'Name',
+
             static::COL_COLOR => 'Color',
             static::COL_TYPE => 'Type',
+            static::COL_AGE => 'Age',
             static::COL_LOCATION => 'Location',
             static::COL_ACTIONS => 'Location'
         ]);
@@ -53,11 +56,13 @@ class AntelopeTable extends AbstractTable
             static::COL_NAME,
             static::COL_COLOR,
             static::COL_TYPE,
+            static::COL_AGE,
         ]);
 
         $config->setSearchable([
             static::COL_NAME,
-            static::COL_COLOR,
+            static::COL_COLOR
+
         ]);
 
         return $config;
@@ -97,6 +102,7 @@ class AntelopeTable extends AbstractTable
 
             $rowData = [
                 static::COL_COLOR => $item->getColor(),
+                static::COL_AGE => $item->getAge(),
                 static::COL_NAME => $item->getName(),
                 static::COL_TYPE => $type->getTypeName(),
                 static::COL_ID_ANTELOPE => $item->getIdantelope(),
