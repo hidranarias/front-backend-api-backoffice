@@ -224,7 +224,7 @@ PHP;
         declare(strict_types=1);
 
         namespace $namespace;
-
+        
         class $processorClassName implements $processorInterfaceName
         {
          $methods
