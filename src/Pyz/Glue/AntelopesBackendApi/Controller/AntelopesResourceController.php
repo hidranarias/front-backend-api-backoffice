@@ -18,6 +18,7 @@ class AntelopesResourceController extends AbstractController
 {
     public function getCollectionAction(GlueRequestTransfer $glueRequestTransfer): GlueResponseTransfer
     {
+        //dd($glueRequestTransfer->getPagination());
         return $this->getFactory()
             ->createAntelopesReader()
             ->getAntelopeCollection($glueRequestTransfer);

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<transfers>
+    <transfer name="AntelopeTypesBackendApiAttributes">
+        <property name="idAntelopeType" type="int"/>
+        <property name="name" type="string"/>
+    </transfer>
+</transfers>

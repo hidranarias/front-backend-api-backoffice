@@ -1,0 +1,84 @@
+module:
+    name: AntelopeLocationsBackendApi
+    namespace: Pyz\Glue
+    correspondingZedModule:
+        name: Antelope
+        namespace: Pyz\Zed
+    config:
+        constants:
+            -   name: RESOURCE_ANTELOPE_LOCATIONS
+                value: antelope-types
+    dependencies:
+        facades:
+            -   name: FACADE_ANTELOPE_TYPE
+                target: antelopetype
+    factory:
+        services:
+            -   name: AntelopeTypeMapper
+                interface: AntelopeTypeMapperInterface
+                class: AntelopeTypeMapper
+            -   name: AntelopeLocationsReader
+                interface: AntelopeTypeReaderInterface
+                class: AntelopeTypeReader
+                dependencies:
+                    - FACADE_ANTELOPE_TYPE
+                    - AntelopeTypeResponseBuilder
+            -   name: AntelopeTypeResponseBuilder
+                interface: AntelopeTypeResponseBuilderInterface
+                class: AntelopeTypeResponseBuilder
+                methodMappings:
+                    -   source: AntelopeTypeCollectionTransfer
+                        target: GlueResponseTransfer
+                    -   source: AntelopeTypeTransfer
+                        target: GlueResourceTransfer
+    controllers:
+        -   name: AntelopeLocationsResourceController
+            actions:
+                -   name: getCollectionAction
+                    request: GlueRequestTransfer
+                    response: GlueResponseTransfer
+                    body: "return new GlueResponseTransfer();"
+                -   name: getAction
+                    request: GlueRequestTransfer
+                    response: GlueResponseTransfer
+                    body: "return new GlueResponseTransfer();"
+    plugins:
+        GlueBackendApiApplication:
+            -   type: GlueBackendApiApplication
+                name: AntelopeLocationsBackendApiResourcePlugin
+                controller: AntelopeLocationsResourceController
+                methods:
+                    -   name: getType
+                        returnType: string
+                        body: "return '';"
+                    -   name: getController
+                        body: "return AntelopeLocationsResourceController::class;"
+                        returnType: string
+                    -   name: getDeclareMethods
+                        returnType: GlueResourceMethodCollectionTransfer
+                        body: "return new GlueResourceMethodCollectionTransfer() ;"
+    processors:
+        readers:
+            -   name: AntelopeTypeReader
+                dependencies:
+                    - FACADE_ANTELOPE_LOCATIONS
+                    - AntelopeResponseBuilder
+        responseBuilders:
+            -   name: AntelopeTypeResponseBuilder
+                dependencies:
+                    - FACADE_ANTELOPE_LOCATIONS
+                mappings:
+                    -   from: AntelopeTypeCollectionTransfer
+                        to: GlueResponseTransfer
+                    -   from: AntelopeTypeTransfer
+                        to: GlueResourceTransfer
+    transfers:
+        -   name: AntelopeLocationsBackendApiAttributes
+            properties:
+                -   name: idAntelopeType
+                    type: int
+                -   name: name
+                    type: string
+
+
+

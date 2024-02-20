@@ -8,6 +8,7 @@ use Generated\Shared\Transfer\AntelopeTransfer;
 use Generated\Shared\Transfer\GlueResourceTransfer;
 use Generated\Shared\Transfer\GlueResponseTransfer;
 use Pyz\Glue\AntelopeBackendApi\AntelopeBackendApiConfig;
+use Pyz\Glue\AntelopesBackendApi\AntelopesBackendApiConfig;
 
 class AntelopeResponseBuilder implements AntelopeResponseBuilderInterface
 {
@@ -28,7 +29,7 @@ class AntelopeResponseBuilder implements AntelopeResponseBuilderInterface
         $resource = new GlueResourceTransfer();
         $attributes = $this->mapAntelopeDtoToAntelopeAttributesDto($antelopeTransfer);
         $resource->setAttributes($attributes);
-        $resource->setType(AntelopeBackendApiConfig::RESOURCE_MODULE);
+        $resource->setType(AntelopesBackendApiConfig::RESOURCE_ANTELOPES);
         $resource->setId($antelopeTransfer->getIdAntelope());
         return $resource;
     }

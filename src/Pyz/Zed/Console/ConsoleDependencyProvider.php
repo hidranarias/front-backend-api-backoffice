@@ -11,6 +11,7 @@ use Pyz\Zed\DataImport\DataImportConfig;
 use Pyz\Zed\Development\Communication\Console\AcceptanceCodeTestConsole;
 use Pyz\Zed\Development\Communication\Console\ApiCodeTestConsole;
 use Pyz\Zed\Development\Communication\Console\FunctionalCodeTestConsole;
+use Pyz\Zed\Toolbox\Communication\Console\GenerateBackendApiModuleConsole;
 use SecurityChecker\Command\SecurityCheckerCommand;
 use Spryker\Zed\Cache\Communication\Console\EmptyAllCachesConsole;
 use Spryker\Zed\CategoryDataImport\CategoryDataImportConfig;
@@ -179,11 +180,52 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
     /**
      * @param \Spryker\Zed\Kernel\Container $container
      *
+     * @return array<\Spryker\Zed\Console\Dependency\Plugin\ConsolePostRunHookPluginInterface>
+     */
+    public function getConsolePostRunHookPlugins(Container $container): array
+    {
+        return [
+            new EventBehaviorPostHookPlugin(),
+        ];
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return array<\Spryker\Shared\ApplicationExtension\Dependency\Plugin\ApplicationPluginInterface>
+     */
+    public function getApplicationPlugins(Container $container): array
+    {
+        $applicationPlugins = parent::getApplicationPlugins($container);
+        $applicationPlugins[] = new PropelApplicationPlugin();
+        $applicationPlugins[] = new TwigApplicationPlugin();
+        $applicationPlugins[] = new ConsoleLocaleApplicationPlugin();
+
+        return $applicationPlugins;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return array<\Symfony\Component\EventDispatcher\EventSubscriberInterface>
+     */
+    public function getEventSubscriber(Container $container): array
+    {
+        $eventSubscriber = parent::getEventSubscriber($container);
+        $eventSubscriber[] = new MonitoringConsolePlugin();
+
+        return $eventSubscriber;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
      * @return array<\Symfony\Component\Console\Command\Command>
      */
     protected function getConsoleCommands(Container $container): array
     {
         $commands = [
+            new GenerateBackendApiModuleConsole(),
             new CacheWarmerConsole(),
             new BuildNavigationConsole(),
             new RemoveNavigationCacheConsole(),
@@ -250,10 +292,12 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . ShipmentDataImportConfig::IMPORT_TYPE_SHIPMENT_PRICE),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_TAX),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_DISCOUNT_AMOUNT),
-            new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . ProductAlternativeDataImportConfig::IMPORT_TYPE_PRODUCT_ALTERNATIVE), #ProductAlternativeFeature
+            new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . ProductAlternativeDataImportConfig::IMPORT_TYPE_PRODUCT_ALTERNATIVE),
+            #ProductAlternativeFeature
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . ProductDiscontinuedDataImportConfig::IMPORT_TYPE_PRODUCT_DISCONTINUED),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . PriceProductScheduleDataImportConfig::IMPORT_TYPE_PRODUCT_PRICE_SCHEDULE),
-            new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_ABSTRACT_GIFT_CARD_CONFIGURATION), #GiftCardFeature
+            new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_ABSTRACT_GIFT_CARD_CONFIGURATION),
+            #GiftCardFeature
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_CONCRETE_GIFT_CARD_CONFIGURATION),
 
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . ShipmentDataImportConfig::IMPORT_TYPE_SHIPMENT),
@@ -319,7 +363,8 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new QueueSetupConsole(),
             new SetUserPermissionsConsole(),
 
-            new DeactivateDiscontinuedProductsConsole(), #ProductDiscontinuedFeature
+            new DeactivateDiscontinuedProductsConsole(),
+            #ProductDiscontinuedFeature
 
             new PriceProductStoreOptimizeConsole(),
 
@@ -420,45 +465,5 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
         }
 
         return $commands;
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return array<\Spryker\Zed\Console\Dependency\Plugin\ConsolePostRunHookPluginInterface>
-     */
-    public function getConsolePostRunHookPlugins(Container $container): array
-    {
-        return [
-            new EventBehaviorPostHookPlugin(),
-        ];
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return array<\Spryker\Shared\ApplicationExtension\Dependency\Plugin\ApplicationPluginInterface>
-     */
-    public function getApplicationPlugins(Container $container): array
-    {
-        $applicationPlugins = parent::getApplicationPlugins($container);
-        $applicationPlugins[] = new PropelApplicationPlugin();
-        $applicationPlugins[] = new TwigApplicationPlugin();
-        $applicationPlugins[] = new ConsoleLocaleApplicationPlugin();
-
-        return $applicationPlugins;
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return array<\Symfony\Component\EventDispatcher\EventSubscriberInterface>
-     */
-    public function getEventSubscriber(Container $container): array
-    {
-        $eventSubscriber = parent::getEventSubscriber($container);
-        $eventSubscriber[] = new MonitoringConsolePlugin();
-
-        return $eventSubscriber;
     }
 }

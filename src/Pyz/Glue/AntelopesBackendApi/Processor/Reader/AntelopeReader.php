@@ -12,9 +12,6 @@ use Pyz\Zed\Antelope\Business\AntelopeFacadeInterface;
 
 class AntelopeReader implements AntelopeReaderInterface
 {
-    private $antelopeResponseCreator;
-    private $antelopesConditionsExpander;
-    private $antelopeMapper;
 
 
     public function __construct(
