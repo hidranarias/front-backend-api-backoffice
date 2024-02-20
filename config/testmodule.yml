@@ -1,0 +1,76 @@
+module:
+    name: TestBackendApi
+    namespace: Pyz\Glue\TestBackendApi
+    correspondingZedModule:
+        name: Test
+        namespace: Pyz\Zed
+    config:
+        constants:
+            -   name: RESOURCE_TEST
+                value: test
+
+    factory:
+        services:
+            -   name: TestMapper
+                folder: Mapper
+                interface: TestMapperInterface
+                class: TestMapper
+                method:
+                    -   name: mapTestEntityToDto
+                        returnType: TestTransfer
+                        body: "return new TestTransfer();"
+            -   name: TestReader
+                interface: TestReaderInterface
+                class: TestReader
+                folder: Reader
+
+            -   name: TestResponseBuilder
+                interface: TestResponseBuilderInterface
+                class: TestResponseBuilder
+                folder: ResponseBuilder
+
+    controllers:
+        -   name: TestResourceController
+            actions:
+                -   name: getCollectionAction
+                    request: GlueRequestTransfer
+                    response: GlueResponseTransfer
+                    body: "return new GlueResponseTransfer();"
+                -   name: getAction
+                    request: GlueRequestTransfer
+                    response: GlueResponseTransfer
+                    body: "return new GlueResponseTransfer();"
+    plugins:
+        GlueBackendApiApplication:
+            -   type: GlueBackendApiApplication
+                name: TestBackendApiResourcePlugin
+                controller: TestResourceController
+
+                methods:
+                    -   name: getType
+                        returnType: string
+                        body: "return '';"
+                    -   name: getController
+                        body: "return TestResourceController::class;"
+                        returnType: string
+                    -   name: getDeclareMethods
+                        returnType: GlueResourceMethodCollectionTransfer
+                        body: "return new GlueResourceMethodCollectionTransfer() ;"
+    processors:
+        readers:
+            -   name: TestReader
+
+        responseBuilders:
+            -   name: TestResponseBuilder
+
+    transfers:
+        -   name: TestBackendApiAttributes
+            strict: true
+            properties:
+                -   name: idTest
+                    type: int
+                -   name: name
+                    type: string
+
+
+

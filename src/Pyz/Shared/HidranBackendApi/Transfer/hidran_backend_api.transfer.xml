@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<transfers>
+    <transfer name="HidranBackendApiAttributes" strict="1">
+        <property name="idHidran" type="int"/>
+        <property name="name" type="string"/>
+    </transfer>
+</transfers>

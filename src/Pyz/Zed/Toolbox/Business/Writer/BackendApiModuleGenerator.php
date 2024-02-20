@@ -10,13 +10,102 @@ use Symfony\Component\Yaml\Yaml;
 
 class BackendApiModuleGenerator
 {
-    public function generateModuleFromConfig(string $configFilePath): void
+    public function generateModuleFromName(string $name): void
     {
-        if (!file_exists($configFilePath)) {
-            throw new RuntimeException(sprintf('The configuration file "%s" does not exist.', $configFilePath));
-        }
+        $content = $this->getDefaultModuleYmlConfig($name);
+        $this->generateModuleFromConfig('', $content);
+    }
 
-        $config = Yaml::parseFile($configFilePath);
+    protected function getDefaultModuleYmlConfig(string $moduleName = null): string
+    {
+        $moduleName = $moduleName ?? 'Test';
+        $zedModule = str_replace('BackendApi', '', $moduleName);
+        $constantName = strtoupper($moduleName);
+        $yml = <<<YML
+            module:
+                name: {$moduleName}BackendApi
+                namespace: Pyz\Glue\\{$moduleName}BackendApi
+                correspondingZedModule:
+                    name: {$zedModule}
+                    namespace: Pyz\Zed
+                config:
+                    constants:
+                        -   name: RESOURCE_{$constantName}
+                            value: {$zedModule}
+
+                factory:
+                    services:
+                        -   name: {$moduleName}Mapper
+                            folder: Mapper
+                            interface: {$moduleName}MapperInterface
+                            class: {$moduleName}Mapper
+                            method:
+                                -   name: map{$moduleName}EntityToDto
+                                    returnType: {$moduleName}Transfer
+                                    body: "return new {$moduleName}Transfer();"
+                        -   name: {$moduleName}Reader
+                            interface: {$moduleName}ReaderInterface
+                            class: {$moduleName}Reader
+                            folder: Reader
+
+                        -   name: {$moduleName}ResponseBuilder
+                            interface: {$moduleName}ResponseBuilderInterface
+                            class: {$moduleName}ResponseBuilder
+                            folder: ResponseBuilder
+
+                controllers:
+                    -   name: {$moduleName}ResourceController
+                        actions:
+                            -   name: getCollectionAction
+                                request: GlueRequestTransfer
+                                response: GlueResponseTransfer
+                                body: "return new GlueResponseTransfer();"
+                            -   name: getAction
+                                request: GlueRequestTransfer
+                                response: GlueResponseTransfer
+                                body: "return new GlueResponseTransfer();"
+                plugins:
+                    GlueBackendApiApplication:
+                        -   type: GlueBackendApiApplication
+                            name: {$moduleName}BackendApiResourcePlugin
+                            controller: {$moduleName}ResourceController
+
+                            methods:
+                                -   name: getType
+                                    returnType: string
+                                    body: "return '';"
+                                -   name: getController
+                                    body: "return {$moduleName}ResourceController::class;"
+                                    returnType: string
+                                -   name: getDeclareMethods
+                                    returnType: GlueResourceMethodCollectionTransfer
+                                    body: "return new GlueResourceMethodCollectionTransfer() ;"
+                processors:
+                    readers:
+                        -   name: {$moduleName}Reader
+
+                    responseBuilders:
+                        -   name: {$moduleName}ResponseBuilder
+
+                transfers:
+                    -   name: {$moduleName}BackendApiAttributes
+                        strict: true
+                        properties:
+                            -   name: id{$moduleName}
+                                type: int
+                            -   name: name
+                                type: string
+
+
+
+
+            YML;
+        return $yml;
+    }
+
+    public function generateModuleFromConfig(string $configFilePath = '', string $content = ''): void
+    {
+        $config = $this->getConfig($content, $configFilePath);
         $this->validateConfig($config);
 
         $moduleName = $config['module']['name'];
@@ -54,6 +143,25 @@ class BackendApiModuleGenerator
         if (isset($config['transfers'])) {
             $this->generateTransferObjects($moduleBasePath, $moduleName, $config['transfers']);
         }
+    }
+
+    /**
+     * @param string $content
+     * @param string $configFilePath
+     * @return mixed
+     */
+    public function getConfig(string $content, string $configFilePath): mixed
+    {
+        if ($content) {
+            $config = Yaml::parse($content);
+        } else {
+            if (!file_exists($configFilePath)) {
+                throw new RuntimeException(sprintf('The configuration file "%s" does not exist.', $configFilePath));
+            }
+
+            $config = Yaml::parseFile($configFilePath);
+        }
+        return $config;
     }
 
     /**
@@ -224,7 +332,7 @@ PHP;
         declare(strict_types=1);
 
         namespace $namespace;
-        
+
         class $processorClassName implements $processorInterfaceName
         {
          $methods
@@ -322,39 +430,42 @@ PHP;
         string $moduleName,
         array $config
     ): void {
-        $factoryFilePath = sprintf('%s/%sBusinessFactory.php', $moduleBasePath, $moduleName);
-        $namespace = "{$moduleNamespace}\\Business";
-
+        $factoryFilePath = sprintf('%s/%sFactory.php', $moduleBasePath, $moduleName);
+        $namespace = $moduleNamespace;
+        $useInterfaces = '';
+        if (isset($config['factory']['services'])) {
+            $useInterfaces = $this->generateUseInterfaces($config['factory']['services'], $namespace);
+        }
         // Start building the content of the factory file
         $factoryFileContent = <<<PHP
-    <?php
+       <?php
 
-    declare(strict_types=1);
+       declare(strict_types=1);
 
-    namespace $namespace;
+       namespace $namespace;
 
-    use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
-
-    class {$moduleName}BusinessFactory extends AbstractBusinessFactory
-    {
-PHP;
-
+       use Spryker\Glue\Kernel\Backend\AbstractFactory;
+       $useInterfaces
+       class {$moduleName}Factory extends AbstractFactory
+          {
+       PHP;
+        $useInterfaces = '';
         // Dynamically add methods for each service defined in the YAML config
         if (isset($config['factory']['services'])) {
             foreach ($config['factory']['services'] as $service) {
                 $serviceName = $service['name'];
+
                 $serviceInterface = $service['interface'];
+
                 $factoryFileContent .= <<<PHP
 
-        /**
-         * @return \\$serviceInterface
-         */
-        public function create$serviceName(): $serviceInterface
-        {
-            return new {$service['class']}();
-        }
 
-PHP;
+                public function create$serviceName(): $serviceInterface
+                {
+                    return new {$service['class']}();
+                }
+
+              PHP;
             }
         }
 
@@ -365,6 +476,19 @@ PHP;
         if (!file_put_contents($factoryFilePath, $factoryFileContent)) {
             throw new RuntimeException("Failed to create factory file at: $factoryFilePath");
         }
+    }
+
+    protected function generateUseInterfaces(array $data = [], $namespace = ''): string
+    {
+        $useInterfaces = '';
+        foreach ($data as $service) {
+            $folder = $service['folder'] ?? '';
+            $serviceInterface = $service['interface'];
+            $serviceClass = $service['class'];
+            $useInterfaces .= "\n use $namespace\Processor\\$folder\\$serviceInterface;";
+            $useInterfaces .= "\n use $namespace\Processor\\$folder\\$serviceClass;";
+        }
+        return $useInterfaces . "\n";
     }
 
     /**
@@ -381,10 +505,6 @@ PHP;
         string $moduleName,
         array $config
     ): void {
-        if (!isset($config['controllers'])) {
-            return; // No controllers to generate.
-        }
-
         foreach ($config['controllers'] as $controller) {
             $controllerName = $controller['name'];
             $controllerPath = sprintf('%s/Controller/%s.php', $moduleBasePath, $controllerName);
@@ -397,10 +517,7 @@ PHP;
                 $body = $action['body'] ?? '';
                 $actionsCode .= <<<PHP
 
-    /**
-     * @param \\Generated\\Shared\\Transfer\\{$requestType} \$requestTransfer
-     * @return \\Generated\\Shared\\Transfer\\{$responseType}
-     */
+
     public function {$action['name']}($requestType \$requestTransfer): $responseType
     {
       $body
@@ -419,7 +536,9 @@ PHP;
         use Spryker\Glue\Kernel\Backend\Controller\AbstractController;
         use Generated\Shared\Transfer\GlueRequestTransfer;
         use Generated\Shared\Transfer\GlueResponseTransfer;
-
+        /**
+         * @method \\$moduleNamespace\\{$moduleName}Factory getFactory()
+         */
         class {$controllerName} extends AbstractController
         {{$actionsCode}
         }
@@ -460,54 +579,54 @@ PHP;
                 $resourceType = $this->convertCamelCaseToScreamingSnakeCase($moduleNameResource);
 
                 $pluginFileContent = <<<PHP
-<?php
+                <?php
 
-declare(strict_types=1);
+                declare(strict_types=1);
 
-namespace {$namespace};
+                namespace {$namespace};
 
-use Spryker\Glue\GlueApplication\Plugin\GlueApplication\Backend\AbstractResourcePlugin;
-use Spryker\Glue\GlueJsonApiConventionExtension\Dependency\Plugin\JsonApiResourceInterface;
-use Generated\Shared\Transfer\GlueResourceMethodCollectionTransfer;
-use Generated\Shared\Transfer\GlueResourceMethodConfigurationTransfer;
-use Pyz\Glue\\{$moduleName}\\{$moduleName}Config;
-use Pyz\Glue\\{$moduleName}\\Controller\\{$moduleNameResource}ResourceController;
-use Pyz\Generated\\{$moduleName}\\Transfer\\{$moduleName}AttributesTransfer;
+                use Spryker\Glue\GlueApplication\Plugin\GlueApplication\Backend\AbstractResourcePlugin;
+                use Spryker\Glue\GlueJsonApiConventionExtension\Dependency\Plugin\JsonApiResourceInterface;
+                use Generated\Shared\Transfer\GlueResourceMethodCollectionTransfer;
+                use Generated\Shared\Transfer\GlueResourceMethodConfigurationTransfer;
+                use Pyz\Glue\\{$moduleName}\\{$moduleName}Config;
+                use Pyz\Glue\\{$moduleName}\\Controller\\{$moduleNameResource}ResourceController;
+                use Pyz\Generated\\{$moduleName}\\Transfer\\{$moduleName}AttributesTransfer;
 
-class {$pluginClassName} extends AbstractResourcePlugin implements JsonApiResourceInterface
-{
-    public function getType(): string
-    {
-        return {$moduleName}Config::RESOURCE_{$resourceType};
-    }
+                class {$pluginClassName} extends AbstractResourcePlugin implements JsonApiResourceInterface
+                {
+                    public function getType(): string
+                    {
+                        return {$moduleName}Config::RESOURCE_{$resourceType};
+                    }
 
-    public function getController(): string
-    {
-        return {$moduleNameResource}ResourceController::class;
-    }
+                    public function getController(): string
+                    {
+                        return {$moduleNameResource}ResourceController::class;
+                    }
 
-    public function getDeclaredMethods(): GlueResourceMethodCollectionTransfer
-    {
-        return (new GlueResourceMethodCollectionTransfer())
-            ->setGetCollection(
-                (new GlueResourceMethodConfigurationTransfer())
-                    ->setAttributes({$moduleName}AttributesTransfer::class)
-            )
-            ->setGet(
-                (new GlueResourceMethodConfigurationTransfer())
-                    ->setAttributes({$moduleName}AttributesTransfer::class)
-            )
-            ->setPost(
-                (new GlueResourceMethodConfigurationTransfer())
-                    ->setAttributes({$moduleName}AttributesTransfer::class)
-            )
-            ->setPatch(
-                (new GlueResourceMethodConfigurationTransfer())
-                    ->setAttributes({$moduleName}AttributesTransfer::class)
-            );
-    }
-}
-PHP;
+                    public function getDeclaredMethods(): GlueResourceMethodCollectionTransfer
+                    {
+                        return (new GlueResourceMethodCollectionTransfer())
+                            ->setGetCollection(
+                                (new GlueResourceMethodConfigurationTransfer())
+                                    ->setAttributes({$moduleName}AttributesTransfer::class)
+                            )
+                            ->setGet(
+                                (new GlueResourceMethodConfigurationTransfer())
+                                    ->setAttributes({$moduleName}AttributesTransfer::class)
+                            )
+                            ->setPost(
+                                (new GlueResourceMethodConfigurationTransfer())
+                                    ->setAttributes({$moduleName}AttributesTransfer::class)
+                            )
+                            ->setPatch(
+                                (new GlueResourceMethodConfigurationTransfer())
+                                    ->setAttributes({$moduleName}AttributesTransfer::class)
+                            );
+                    }
+                }
+                PHP;
                 if (!file_put_contents($pluginPath, $pluginFileContent)) {
                     throw new RuntimeException("Failed to create plugin file at: $pluginPath");
                 }

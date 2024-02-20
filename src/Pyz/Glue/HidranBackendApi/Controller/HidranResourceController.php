@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Pyz\Glue\AntelopeTypesBackendApi\Controller;
+namespace Pyz\Glue\HidranBackendApi\Controller;
 
 use Spryker\Glue\Kernel\Backend\Controller\AbstractController;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueResponseTransfer;
 /**
- * @method \Pyz\Glue\AntelopeTypesBackendApi\AntelopeTypesBackendApiFactory getFactory()
+ * @method \Pyz\Glue\HidranBackendApi\HidranBackendApiFactory getFactory()
  */
-class AntelopeTypesResourceController extends AbstractController
+class HidranResourceController extends AbstractController
 {
 
     public function getCollectionAction(GlueRequestTransfer $requestTransfer): GlueResponseTransfer

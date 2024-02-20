@@ -21,4 +21,9 @@ class ToolboxFacade extends AbstractFacade implements ToolboxFacadeInterface
     {
         $this->getFactory()->createModuleGenerator()->generateModuleFromConfig($configFilePath);
     }
+
+    public function generateModuleFromName(string $name): void
+    {
+        $this->getFactory()->createModuleGenerator()->generateModuleFromName($name);
+    }
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<transfers>
+    <transfer name="TestBackendApiAttributes" strict="1">
+        <property name="idTest" type="int"/>
+        <property name="name" type="string"/>
+    </transfer>
+</transfers>

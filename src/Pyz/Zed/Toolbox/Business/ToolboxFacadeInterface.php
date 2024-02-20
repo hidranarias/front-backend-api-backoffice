@@ -7,4 +7,6 @@ namespace Pyz\Zed\Toolbox\Business;
 interface ToolboxFacadeInterface
 {
     public function generateModuleFromConfig(string $configFilePath): void;
+
+    public function generateModuleFromName(string $configFilePath);
 }
