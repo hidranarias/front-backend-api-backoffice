@@ -12,7 +12,7 @@ use Generated\Shared\Transfer\AntelopeTransfer;
 
 interface AntelopeMapperInterface
 {
-    public function mapAntelopeAttributesDtoToAntelopeDto(
+    public function mapBackendAntelopeAttributesDtoToAntelopeDto(
         AntelopesBackendApiAttributesTransfer $antelopeRestAttributesTransfer,
         AntelopeTransfer $antelopeTransfer
     ): AntelopeTransfer;

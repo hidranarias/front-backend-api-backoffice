@@ -4,6 +4,7 @@ namespace Pyz\Glue\AntelopesBackendApi\Processor\Creator;
 
 use Generated\Shared\Transfer\AntelopeCollectionTransfer;
 use Generated\Shared\Transfer\AntelopeRestAttributesTransfer;
+use Generated\Shared\Transfer\AntelopesBackendApiAttributesTransfer;
 use Generated\Shared\Transfer\AntelopeTransfer;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueResponseTransfer;
@@ -21,14 +22,18 @@ class AntelopeCreator implements AntelopeCreatorInterface
     ) {
     }
 
-    public function createAntelope(GlueRequestTransfer $glueRequestTransfer): GlueResponseTransfer
-    {
+    public function createAntelope(
+        AntelopesBackendApiAttributesTransfer $backendApiAttributesTransfer,
+        GlueRequestTransfer $glueRequestTransfer
+    ): GlueResponseTransfer {
         /**
          * @var AntelopeRestAttributesTransfer $attributes
          */
-        $attributes = $glueRequestTransfer->getResourceOrFail()->getAttributes();
-        $antelopeTransfer = $this->antelopeMapper->mapAntelopeAttributesDtoToAntelopeDto($attributes,
-            new AntelopeTransfer());
+        //  $antelopeRestAttributesTransfer = $glueRequestTransfer->getResourceOrFail()->getAttributes();
+
+        $antelopeTransfer = $this->antelopeMapper
+            ->mapBackendAntelopeAttributesDtoToAntelopeDto($backendApiAttributesTransfer,
+                new AntelopeTransfer());
         $antelopeTransfer = $this->antelopeFacade->createAntelope($antelopeTransfer);
         $antelopeCollection = (new AntelopeCollectionTransfer())->addAntelope($antelopeTransfer);
         return $this->antelopeResponseBuilder->createAntelopeResponse($antelopeCollection);

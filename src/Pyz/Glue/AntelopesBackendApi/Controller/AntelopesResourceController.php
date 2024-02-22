@@ -7,6 +7,7 @@
 
 namespace Pyz\Glue\AntelopesBackendApi\Controller;
 
+use Generated\Shared\Transfer\AntelopesBackendApiAttributesTransfer;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueResponseTransfer;
 use Spryker\Glue\Kernel\Controller\AbstractController;
@@ -31,10 +32,13 @@ class AntelopesResourceController extends AbstractController
             ->getAntelope($glueRequestTransfer);
     }
 
-    public function postAction(GlueRequestTransfer $glueRequestTransfer): GlueResponseTransfer
-    {
+    public function postAction(
+
+        AntelopesBackendApiAttributesTransfer $antelopesBackendApiAttributesTransfer,
+        GlueRequestTransfer $glueRequestTransfer
+    ): GlueResponseTransfer {
         return $this->getFactory()
             ->createAntelopeWriter()
-            ->createAntelope($glueRequestTransfer);
+            ->createAntelope($antelopesBackendApiAttributesTransfer, $glueRequestTransfer);
     }
 }
