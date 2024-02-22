@@ -30,4 +30,11 @@ class AntelopesResourceController extends AbstractController
             ->createAntelopesReader()
             ->getAntelope($glueRequestTransfer);
     }
+
+    public function postAction(GlueRequestTransfer $glueRequestTransfer): GlueResponseTransfer
+    {
+        return $this->getFactory()
+            ->createAntelopeWriter()
+            ->createAntelope($glueRequestTransfer);
+    }
 }

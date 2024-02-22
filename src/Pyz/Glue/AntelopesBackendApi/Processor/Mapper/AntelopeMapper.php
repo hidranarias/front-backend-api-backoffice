@@ -7,6 +7,16 @@
 
 namespace Pyz\Glue\AntelopesBackendApi\Processor\Mapper;
 
+use Generated\Shared\Transfer\AntelopesBackendApiAttributesTransfer;
+use Generated\Shared\Transfer\AntelopeTransfer;
+
 class AntelopeMapper implements AntelopeMapperInterface
 {
+
+    public function mapAntelopeAttributesDtoToAntelopeDto(
+        AntelopesBackendApiAttributesTransfer $antelopeRestAttributesTransfer,
+        AntelopeTransfer $antelopeTransfer
+    ): AntelopeTransfer {
+        return $antelopeTransfer->fromArray($antelopeRestAttributesTransfer->toArray(), true);
+    }
 }

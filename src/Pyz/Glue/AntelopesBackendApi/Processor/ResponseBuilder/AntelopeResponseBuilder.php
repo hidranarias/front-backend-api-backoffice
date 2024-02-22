@@ -13,10 +13,10 @@ use Pyz\Glue\AntelopesBackendApi\AntelopesBackendApiConfig;
 class AntelopeResponseBuilder implements AntelopeResponseBuilderInterface
 {
 
-    public function createAntelopeResponse(AntelopeCollectionTransfer $antelopeCollectionResponseTransfer
+    public function createAntelopeResponse(AntelopeCollectionTransfer $antelopeCollectionTransfer
     ): GlueResponseTransfer {
         $response = new GlueResponseTransfer();
-        foreach ($antelopeCollectionResponseTransfer->getAntelopes() as $antelopeTransfer) {
+        foreach ($antelopeCollectionTransfer->getAntelopes() as $antelopeTransfer) {
             $resource = $this->mapAntelopeDtoToGlueResourceTransfer($antelopeTransfer);
             $response->addResource($resource);
         }
