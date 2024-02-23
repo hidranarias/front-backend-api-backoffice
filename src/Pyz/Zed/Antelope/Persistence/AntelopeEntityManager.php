@@ -35,19 +35,19 @@ class AntelopeEntityManager extends AbstractEntityManager implements AntelopeEnt
         return (bool)$res;
     }
 
-    public function updateAntelope($antelopeTransfer): bool
+    public function updateAntelope($antelopeTransfer): AntelopeTransfer
     {
         $antelopeEntity = $this->getFactory()->createAntelopeQuery()
             ->filterByIdantelope($antelopeTransfer->getIdAntelope())->findOne();
 
         if (!$antelopeEntity) {
-            return false;
+            return $antelopeTransfer;
         }
         $mapper = $this->getFactory()->createAntelopeMapper();
         $antelopeEntity = $mapper->mapAntelopeTransferToAntelopeEntity($antelopeTransfer, $antelopeEntity);
         $antelopeEntity->fromArray($antelopeTransfer->modifiedToArray());
         $antelopeEntity->save();
-        return true;
+        return $mapper->mapAntelopeEntityToAntelopeTransfer($antelopeEntity, $antelopeTransfer);
     }
 
 

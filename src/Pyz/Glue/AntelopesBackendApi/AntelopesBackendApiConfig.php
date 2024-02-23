@@ -15,4 +15,7 @@ class AntelopesBackendApiConfig extends AbstractBundleConfig
      * @var string
      */
     public const RESOURCE_ANTELOPES = 'antelopes';
+    public const ANTELOPE_NOT_FOUND = '5401';
+    //TODO: ADD a glossary key
+    public const ANTELOPE_NOT_FOUND_MSG = 'Antelope not found';
 }

@@ -17,7 +17,7 @@ interface AntelopeWriterInterface
 
     public function deleteAntelope(AntelopeTransfer $antelopeTransfer): bool;
 
-    public function updateAntelope($antelopeTransfer): bool;
+    public function updateAntelope($antelopeTransfer): AntelopeTransfer;
 
 
 }
