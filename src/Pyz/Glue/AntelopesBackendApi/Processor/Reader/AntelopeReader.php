@@ -16,7 +16,7 @@ class AntelopeReader implements AntelopeReaderInterface
 
     public function __construct(
         private readonly AntelopeFacadeInterface $antelopeFacade,
-        private readonly AntelopeResponseBuilderInterface $antelopeResponseBuilder
+        private readonly AntelopeResponseBuilderInterface $antelopeResponseBuilder,
     ) {
     }
 
@@ -46,4 +46,6 @@ class AntelopeReader implements AntelopeReaderInterface
         // dd($antelopeTransfers);
         return $this->antelopeResponseBuilder->createantelopeResponse($antelopeCollection);
     }
+
+
 }

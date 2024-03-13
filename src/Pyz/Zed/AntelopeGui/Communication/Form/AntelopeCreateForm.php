@@ -8,6 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Positive;
+use Symfony\Component\Validator\Constraints\Range;
 
 class AntelopeCreateForm extends AbstractType
 {
@@ -21,6 +23,7 @@ class AntelopeCreateForm extends AbstractType
     protected const BLOCK_PREFIX = 'antelope';
     public const ANTELOPE_LOCATIONS = 'locations';
     public const ANTELOPE_TYPES = 'types';
+    public const GENDERS = ['Select' => '', 'F' => 'F', 'M' => 'M'];
 
     public function getName(): string
     {
@@ -87,9 +90,10 @@ class AntelopeCreateForm extends AbstractType
     private function addGenderField(FormBuilderInterface $builder): void
     {
         $builder->add(
-            static::FIELD_GENDER, TextType::class,
+            static::FIELD_GENDER, ChoiceType::class,
             [
                 'label' => 'Gender',
+                'choices' => self::GENDERS,
                 'constraints' => [
                     $this->createNotBlankConstraint(),
                 ],
@@ -105,6 +109,9 @@ class AntelopeCreateForm extends AbstractType
                 'label' => 'Weight',
                 'constraints' => [
                     $this->createNotBlankConstraint(),
+                    new Positive(),
+                    new Range(min: 1, max: 400)
+
                 ],
             ]
         );
@@ -118,6 +125,9 @@ class AntelopeCreateForm extends AbstractType
                 'label' => 'Age',
                 'constraints' => [
                     $this->createNotBlankConstraint(),
+                    new Positive(),
+
+
                 ],
             ]
         );

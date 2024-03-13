@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use RuntimeException;
 use Symfony\Component\Yaml\Yaml;
 
-class BackendApiModuleGenerator
+class BackendApiModuleGenerator implements ModuleGeneratorInterface
 {
     public function generateModuleFromName(string $name): void
     {
@@ -209,7 +209,7 @@ class BackendApiModuleGenerator
         ];
 
         foreach ($directories as $directory) {
-            if (!is_dir($directory) && !mkdir($directory, 0777, true) && !is_dir($directory)) {
+            if (!is_dir($directory) && !mkdir($directory, 0775, true) && !is_dir($directory)) {
                 throw new RuntimeException(sprintf('Directory "%s" was not created', $directory));
             }
         }

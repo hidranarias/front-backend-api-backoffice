@@ -17,13 +17,43 @@ class ToolboxFacade extends AbstractFacade implements ToolboxFacadeInterface
      * @param string $configFilePath Path to the YAML configuration file.
      * @return void
      */
-    public function generateModuleFromConfig(string $configFilePath): void
+    public function generateBackendApiModule(string $configFilePath): void
     {
         $this->getFactory()->createModuleGenerator()->generateModuleFromConfig($configFilePath);
     }
 
-    public function generateModuleFromName(string $name): void
+    public function generateBackendApiModuleFromName(string $name): void
     {
         $this->getFactory()->createModuleGenerator()->generateModuleFromName($name);
+    }
+
+    public function generateZedModuleFromConfig(mixed $configFilePath): void
+    {
+        // TODO: Implement generateZedModuleFromConfig() method.
+    }
+
+    public function generateYvesModuleFromConfig(mixed $configFilePath): void
+    {
+        // TODO: Implement generateYvesModuleFromConfig() method.
+    }
+
+    public function generateClientModuleFromConfig(mixed $configFilePath): void
+    {
+        // TODO: Implement generateClientModuleFromConfig() method.
+    }
+
+    public function generateFrontendApiModuleFromConfig(mixed $configFilePath): void
+    {
+        // TODO: Implement generateFrontendApiModuleFromConfig() method.
+    }
+
+    public function generateBackendApiModuleFromConfig(mixed $configFilePath): void
+    {
+        // TODO: Implement generateBackendApiModuleFromConfig() method.
+    }
+
+    public function generateZedModuleFromName(mixed $name): void
+    {
+        $this->getFactory()->createZedModuleGenerator()->generateModuleFromName($name);
     }
 }

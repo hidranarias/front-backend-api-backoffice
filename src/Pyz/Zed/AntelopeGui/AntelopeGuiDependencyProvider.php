@@ -21,6 +21,7 @@ class AntelopeGuiDependencyProvider extends AbstractBundleDependencyProvider
     public const  FACADE_ANTELOPE_TYPE = 'FACADE_ANTELOPE_TYPE';
 
     public const PROPEL_QUERY_ANTELOPE = 'PROPEL_QUERY_ANTELOPE';
+    public const FACADE_MAIL = 'FACADE_MAIL';
 
     public function provideCommunicationLayerDependencies(Container $container): Container
     {
@@ -50,6 +51,7 @@ class AntelopeGuiDependencyProvider extends AbstractBundleDependencyProvider
             static::FACADE_ANTELOPE_TYPE,
             fn() => $container->getLocator()->antelopeType()->facade()
         );
+      
         return $container;
     }
 

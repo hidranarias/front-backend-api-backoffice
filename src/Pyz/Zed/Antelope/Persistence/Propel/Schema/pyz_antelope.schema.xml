@@ -12,9 +12,7 @@
         <column name="location_id" type="INTEGER" required="true"/>
         <column name="age" type="INTEGER" required="true"/>
         <column name="weight" type="FLOAT" required="true"/>
-        <column name="gender" type="ENUM" valueSet="male, female" required="true"/>
-        <column name="created_at" type="TIMESTAMP" required="true"/>
-        <column name="updated_at" type="TIMESTAMP"/>
+        <column name="gender" type="ENUM" default="F" valueSet="M,F" required="true"/>
 
 
         <foreign-key name="pyz_antelope-fk_antelope_type" foreignTable="pyz_antelope_type" onDelete="CASCADE">
@@ -26,6 +24,13 @@
         </foreign-key>
 
         <behavior name="event"/>
+        <behavior name="timestampable"/>
+        <unique name="pyz_antelope-uuid">
+            <unique-column name="uuid"/>
+        </unique>
+        <behavior name="uuid">
+            <parameter name="key_columns" value="idAntelope"/>
+        </behavior>
     </table>
 
 </database>

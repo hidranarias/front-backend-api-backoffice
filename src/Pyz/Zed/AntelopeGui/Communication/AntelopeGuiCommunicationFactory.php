@@ -72,4 +72,6 @@ class AntelopeGuiCommunicationFactory extends AbstractCommunicationFactory
     {
         return $this->getProvidedDependency(AntelopeGuiDependencyProvider::FACADE_ANTELOPE_TYPE);
     }
+
+
 }

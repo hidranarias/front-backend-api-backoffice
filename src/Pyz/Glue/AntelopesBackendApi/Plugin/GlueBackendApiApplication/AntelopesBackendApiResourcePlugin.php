@@ -44,6 +44,8 @@ class AntelopesBackendApiResourcePlugin extends AbstractResourcePlugin implement
                 (new GlueResourceMethodConfigurationTransfer())->setAttributes(
                     AntelopesBackendApiAttributesTransfer::class
                 )
+            )->setDelete(
+                (new GlueResourceMethodConfigurationTransfer())
             );
     }
 }

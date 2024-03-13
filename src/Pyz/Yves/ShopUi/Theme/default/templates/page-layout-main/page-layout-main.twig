@@ -4,30 +4,8 @@
     activePage: ''
 } %}
  {% block headScripts %}
-     <script src='https://js.sentry-cdn.com/25b0944aff90b7851ee0b6bceea4985c.min.js' crossorigin="anonymous"></script>"
 
-     <script>
-         Sentry.onLoad(function () {
-
-             Sentry.init({
-                 dsn: 'https://25b0944aff90b7851ee0b6bceea4985c@o4506705939726336.ingest.sentry.io/4506705991696384',
-                 integrations: [
-                     Sentry.replayIntegration(),
-                 ],
-                 environment: 'development',
-                 // Performance Monitoring
-                 tracesSampleRate:
-                     1.0, // Capture 100% of the transactions
-                 // Session Replay
-                 replaysSessionSampleRate:
-                     0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
-                 replaysOnErrorSampleRate:
-                     1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
-             })
-             ;
-         });
-         // callmyApp()
-     </script>
+    
      {{ parent() }}
 
 

@@ -12,10 +12,11 @@ use Spryker\Glue\Kernel\Backend\Container;
 
 class AntelopesBackendApiDependencyProvider extends AbstractBundleDependencyProvider
 {
- /**
-  * @var string
-  */
+    /**
+     * @var string
+     */
     public const FACADE_ANTELOPE = 'FACADE_ANTELOPE';
+
 
     public function provideBackendDependencies(Container $container): Container
     {
@@ -29,7 +30,7 @@ class AntelopesBackendApiDependencyProvider extends AbstractBundleDependencyProv
     {
         $container->set(
             static::FACADE_ANTELOPE,
-            fn (Container $container) => $container->getLocator()->antelope()->facade()
+            fn(Container $container) => $container->getLocator()->antelope()->facade()
         );
 
         return $container;

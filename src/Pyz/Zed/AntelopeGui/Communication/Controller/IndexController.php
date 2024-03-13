@@ -19,6 +19,7 @@ class IndexController extends AbstractController
         return $this->viewResponse(['antelopeTable' => $table->render()]);
     }
 
+
     public function tableAction(): JsonResponse
     {
         $table = $this->getFactory()

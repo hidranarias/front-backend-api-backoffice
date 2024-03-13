@@ -11,6 +11,8 @@ namespace Pyz\Zed\Antelope\Persistence;
 
 use Generated\Shared\Transfer\AntelopeTransfer;
 use Orm\Zed\Antelope\Persistence\PyzAntelope;
+use Pyz\Zed\Antelope\Persistence\Mapper\AntelopeMapper;
+use Pyz\Zed\Antelope\Persistence\Mapper\AntelopeMapperInterface;
 use Spryker\Zed\Kernel\Persistence\AbstractEntityManager;
 
 /**
@@ -29,10 +31,16 @@ class AntelopeEntityManager extends AbstractEntityManager implements AntelopeEnt
 
     public function deleteAntelope(AntelopeTransfer $antelopeTransfer): bool
     {
-        $res = $this->getFactory()->createAntelopeQuery()->
-        filterByIdantelope($antelopeTransfer->getIdAntelope())->delete();
+        $antelopeEntity = $this->createAntelopeMapper()
+            ->mapAntelopeDtoToAntelope(new PyzAntelope(),
+                $antelopeTransfer);
+        $antelopeEntity->delete();
+        return $antelopeEntity->isDeleted();
+    }
 
-        return (bool)$res;
+    public function createAntelopeMapper(): AntelopeMapperInterface
+    {
+        return new AntelopeMapper();
     }
 
     public function updateAntelope($antelopeTransfer): AntelopeTransfer
@@ -49,6 +57,5 @@ class AntelopeEntityManager extends AbstractEntityManager implements AntelopeEnt
         $antelopeEntity->save();
         return $mapper->mapAntelopeEntityToAntelopeTransfer($antelopeEntity, $antelopeTransfer);
     }
-
 
 }

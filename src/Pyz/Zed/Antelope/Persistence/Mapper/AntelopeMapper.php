@@ -62,4 +62,12 @@ class AntelopeMapper implements AntelopeMapperInterface
         }
         return $antelopeCollectionTransfer;
     }
+
+    public function mapAntelopeDtoToAntelope(PyzAntelope $antelope, AntelopeTransfer $antelopeTransfer): PyzAntelope
+    {
+        $arr = $antelopeTransfer->toArray(false, true);
+        return $antelope->fromArray(
+            $arr
+        );
+    }
 }
