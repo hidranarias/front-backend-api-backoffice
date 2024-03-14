@@ -104,7 +104,11 @@ class GenerateBackendApiModuleConsole extends Console
                 case 'backendapi':
                 case 'backend':
                 default:
-                    $this->getFacade()->generateBackendApiModuleFromConfig($configFilePath);
+                    if ($configFilePath) {
+                        $this->getFacade()->generateBackendApiModuleFromConfig($configFilePath);
+                    } else {
+                        $this->getFacade()->generateBackendApiModuleFromName($name);
+                    }
                     break;
             }
         } catch (\Exception $e) {

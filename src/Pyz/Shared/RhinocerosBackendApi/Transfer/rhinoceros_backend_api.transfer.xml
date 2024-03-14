@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<transfers>
+    <transfer name="RhinocerosBackendApiAttributes" strict="1">
+        <property name="idRhinoceros" type="int"/>
+        <property name="name" type="string"/>
+    </transfer>
+</transfers>
