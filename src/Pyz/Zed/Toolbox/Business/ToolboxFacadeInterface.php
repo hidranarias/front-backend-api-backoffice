@@ -10,15 +10,15 @@ interface ToolboxFacadeInterface
 
     public function generateBackendApiModuleFromName(string $configFilePath);
 
-    public function generateZedModuleFromConfig(mixed $configFilePath);
+    public function generateZedModuleFromConfig(string $configFilePath);
 
-    public function generateYvesModuleFromConfig(mixed $configFilePath);
+    public function generateYvesModuleFromConfig(string $configFilePath);
 
-    public function generateClientModuleFromConfig(mixed $configFilePath);
+    public function generateClientModuleFromConfig(string $configFilePath);
 
-    public function generateFrontendApiModuleFromConfig(mixed $configFilePath);
+    public function generateFrontendApiModuleFromConfig(string $configFilePath);
 
-    public function generateBackendApiModuleFromConfig(mixed $configFilePath);
+    public function generateBackendApiModuleFromConfig(string $configFilePath);
 
-    public function generateZedModuleFromName(mixed $name);
+    public function generateZedModuleFromName(string $name);
 }

@@ -1,0 +1,93 @@
+module:
+    name: RhinoBackendApi
+    namespace: Pyz\Glue\RhinoBackendApi
+    correspondingZedModule:
+        name: AntelopeType
+        namespace: Pyz\Zed
+    config:
+        constants:
+            -   name: RESOURCE_ANTELOPE_TYPES
+                value: antelope-types
+    dependencies:
+        facades:
+            -   name: FACADE_ANTELOPE_TYPE
+                target: antelopetype
+    factory:
+        services:
+            -   name: AntelopeTypeMapper
+                folder: Mapper
+                interface: AntelopeTypeMapperInterface
+                class: AntelopeTypeMapper
+                method:
+                    -   name: mapAntelopeTypeEntityToDto
+                        returnType: AntelopeTypeTransfer
+                        body: "return new AntelopeTypeTransfer();"
+            -   name: AntelopeTypesReader
+                interface: AntelopeTypeReaderInterface
+                class: AntelopeTypeReader
+                folder: Reader
+                dependencies:
+                    - FACADE_ANTELOPE_TYPE
+                    - AntelopeTypeResponseBuilder
+            -   name: AntelopeTypeResponseBuilder
+                interface: AntelopeTypeResponseBuilderInterface
+                class: AntelopeTypeResponseBuilder
+                folder: ResponseBuilder
+                methodMappings:
+                    -   source: AntelopeTypeCollectionTransfer
+                        target: GlueResponseTransfer
+                    -   source: AntelopeTypeTransfer
+                        target: GlueResourceTransfer
+    controllers:
+        -   name: AntelopeTypesResourceController
+            actions:
+                -   name: getCollectionAction
+                    request: GlueRequestTransfer
+                    response: GlueResponseTransfer
+                    body: "return new GlueResponseTransfer();"
+                -   name: getAction
+                    request: GlueRequestTransfer
+                    response: GlueResponseTransfer
+                    body: "return new GlueResponseTransfer();"
+    plugins:
+        GlueBackendApiApplication:
+            -   type: GlueBackendApiApplication
+                name: RhinoBackendApiResourcePlugin
+                controller: AntelopeTypesResourceController
+
+                methods:
+                    -   name: getType
+                        returnType: string
+                        body: "return '';"
+                    -   name: getController
+                        body: "return AntelopeTypesResourceController::class;"
+                        returnType: string
+                    -   name: getDeclareMethods
+                        returnType: GlueResourceMethodCollectionTransfer
+                        body: "return new GlueResourceMethodCollectionTransfer() ;"
+    processors:
+        readers:
+            -   name: AntelopeTypeReader
+                dependencies:
+                    - FACADE_ANTELOPE_TYPES
+                    - AntelopeResponseBuilder
+        responseBuilders:
+            -   name: AntelopeTypeResponseBuilder
+                dependencies:
+                    - FACADE_ANTELOPE_TYPES
+                mappings:
+                    -   from: AntelopeTypeCollectionTransfer
+                        to: GlueResponseTransfer
+                    -   from: AntelopeTypeTransfer
+                        to: GlueResourceTransfer
+    transfers:
+        -   name: RhinoBackendApiAttributes
+            strict: true
+            properties:
+                -   name: idAntelopeType
+                    type: int
+                -   name: name
+                    type: string
+
+
+

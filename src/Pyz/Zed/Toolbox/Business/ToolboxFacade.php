@@ -47,9 +47,9 @@ class ToolboxFacade extends AbstractFacade implements ToolboxFacadeInterface
         // TODO: Implement generateFrontendApiModuleFromConfig() method.
     }
 
-    public function generateBackendApiModuleFromConfig(mixed $configFilePath): void
+    public function generateBackendApiModuleFromConfig(string $configFilePath): void
     {
-        // TODO: Implement generateBackendApiModuleFromConfig() method.
+        $this->getFactory()->createBackendApiModuleGenerator()->generateModuleFromConfig($configFilePath);
     }
 
     public function generateZedModuleFromName(mixed $name): void
